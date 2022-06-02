@@ -1,102 +1,24 @@
 <template>
-  <div class="boardList">
-    <div class="container">
-      <ul>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목1</dt>
-              <dd>1994-02-26</dd>
-            </dl>
+  <div class="boardList mx-0 px-0" >
+    <div class="container-fluid row mx-0">
+        <div class="col-2"></div>
+        <div class="col-8 row">
+          <div class="col-3 divItem pt-2" v-for="n in 12" :key="n">
+            <div class="w-100 px-3" style="display: flex; justify-content: center; flex-direction: column;">
+              <img src="@/assets/logo.png" class="d-block img" style="object-fit: cover;" alt="..."/>
+              <div>
+                <dt>제목1</dt>
+                <dd>1994-02-26</dd>
+              </div>
+            </div>
           </div>
-        </li>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목2</dt>
-              <dd>1994-02-26</dd>
-            </dl>
-          </div>
-        </li>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목3</dt>
-              <dd>1994-02-26</dd>
-            </dl>
-          </div>
-        </li>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목4</dt>
-              <dd>1994-02-26</dd>
-            </dl>
-          </div>
-        </li>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목5</dt>
-              <dd>1994-02-26</dd>
-            </dl>
-          </div>
-        </li>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목1</dt>
-              <dd>1994-02-26</dd>
-            </dl>
-          </div>
-        </li>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목2</dt>
-              <dd>1994-02-26</dd>
-            </dl>
-          </div>
-        </li>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목3</dt>
-              <dd>1994-02-26</dd>
-            </dl>
-          </div>
-        </li>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목4</dt>
-              <dd>1994-02-26</dd>
-            </dl>
-          </div>
-        </li>
-        <li class="col-xs-12 col-sm-6 col-md-3">
-          <div>
-            <img alt="Vue logo" src="@/assets/logo.png" width="150" />
-            <dl>
-              <dt>제목5</dt>
-              <dd>1994-02-26</dd>
-            </dl>
-          </div>
-        </li>
-      </ul>
-      <div class="d-flex">
-        <button>글 작성</button>
+          <div class="col-12 d-flex align-content-end justify-content-end">
+						<a type="button" class="btn btn-info border pt-1 mt-1" style="font-size: 20px; width: 90px;">글쓰기</a>
+					</div>
       </div>
+      <div class="col-2"></div>
     </div>
+
     <ul class="pagination d-flex justify-content-center">
       <li class="page-item"><a class="page-link" href="#">Previous</a></li>
       <li class="page-item"><a class="page-link" href="#">1</a></li>
@@ -123,14 +45,17 @@ getBoardList(1);
 </script>
 
 <style scoped>
-ul {
-  list-style: none;
-}
 
-li {
-  display: inline-block;
-}
 
-.pagination {
-}
+</style>
+
+<style>
+  .divItem{
+    border-bottom: 2px solid #E2E2E2;
+  }
+  .img{
+    width: 100%; height: auto;
+    max-height: 120px;
+  }
+
 </style>
