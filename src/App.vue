@@ -1,9 +1,15 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+  <nav class="d-flex justify-content-between">
+    <div><router-link to="/">Home</router-link> | <router-link to="/board">Board</router-link></div>
+    <div>
+      <h1>포토 앨범</h1>
+    </div>
+    <div>
+      <router-link to="/auth/join" class="btn btn-info btn-sm mr-2">회원가입</router-link>
+      <router-link to="/auth/login" class="btn btn-info btn-sm mr-2">로그인</router-link>
+    </div>
   </nav>
-  <router-view/>
+  <router-view />
 </template>
 
 <style>
@@ -11,7 +17,6 @@
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
 }
 
