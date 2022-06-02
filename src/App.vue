@@ -1,18 +1,45 @@
 <template>
-  <nav class="d-flex justify-content-between">
-    <div><router-link to="/">Home</router-link> | <router-link to="/board">Board</router-link></div>
-    <div>
-      <h1>포토 앨범</h1>
-    </div>
-    <div>
-      <router-link to="/auth/join" class="btn btn-info btn-sm mr-2">회원가입</router-link>
-      <router-link to="/auth/login" class="btn btn-info btn-sm mr-2">로그인</router-link>
+  <nav>
+    <div class="row">
+      <div class="col-2"></div>
+      <div class="col-8" style="text-align: center">
+        <router-link to="/" class="main">Photo Album</router-link>
+      </div>
+      <div class="col-2" style="text-align: end">
+        <router-link to="/auth/join" class="headerbtn">회원가입</router-link>
+        <router-link to="/auth/login" class="headerbtn">로그인</router-link>
+      </div>
     </div>
   </nav>
   <router-view />
 </template>
 
 <style>
+.main {
+  text-decoration: none;
+  color: black;
+  font-size: 3em;
+}
+
+.main:hover {
+  text-decoration: none;
+  color: black;
+}
+
+.headerbtn {
+  color: black;
+  font-weight: 500;
+  font-size: 1em;
+  margin: auto 1em;
+  text-align: right;
+}
+
+.headerbtn:hover {
+  color: black;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -21,15 +48,17 @@
 }
 
 nav {
-  padding: 30px;
+  padding: 0;
+  padding: 2em 1em 1em 1em;
+  border-bottom: 0.1em solid black;
 }
 
-nav a {
+/* nav a {
   font-weight: bold;
   color: #2c3e50;
 }
 
 nav a.router-link-exact-active {
   color: #42b983;
-}
+} */
 </style>

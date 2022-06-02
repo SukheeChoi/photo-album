@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="card">
     <div class="card-header">Join</div>
     <div class="card-body">
@@ -27,6 +27,22 @@
         <input type="text" class="form-control" v-model="user.email" />
       </div>
       <button class="btn btn-info btn-sm" v-on:click="handleJoin()">가입</button>
+    </div>
+  </div>
+</template>
+
+<script setup>
+
+</script>
+
+<style scoped>
+
+</style> -->
+
+<template>
+  <div class="card">
+    <div class="card-header"></div>
+    <div class="card-body">
     </div>
   </div>
 </template>
