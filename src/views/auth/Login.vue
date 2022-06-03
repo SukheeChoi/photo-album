@@ -1,19 +1,17 @@
 <template>
   <div>
     <div>
-      <div>
-        <form class="form" method="post" action="${pageContext.request.contextPath}/user/login">
-          <div class="logintitle">로그인</div>
-          <div>
-            <input type="text" class="form-control" id="userId" placeholder="아이디" v-model="user.id" />
-            <input type="password" class="form-control" placeholder="비밀번호" v-model="user.password" />
+      <div class="form">
+        <div class="logintitle">로그인</div>
+        <div>
+          <input type="text" class="form-control" id="userId" placeholder="아이디" v-model="user.id" />
+          <input type="password" class="form-control" placeholder="비밀번호" v-model="user.password" />
 
-            <!-- <c:if test="${error != null}">
+          <!-- <c:if test="${error != null}">
               <small style="color: red" id="loginError">${error}</small>
             </c:if> -->
-            <button class="loginbutton" @click="handlelogin">로그인</button>
-          </div>
-        </form>
+          <button class="loginbutton" @click="handleLogin">로그인</button>
+        </div>
       </div>
       <AlertDialog v-if="alertDialog" :message="alertDialogMessage" :loading="loading" @close="alertDialog = false" />
     </div>
@@ -22,26 +20,30 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import apiAuth from "@/apis/auth";
+import { useRouter } from "vue-router";
+import auth from "@/apis/auth";
 import AlertDialog from "@/components/AlertDialog.vue";
+
+const router = useRouter();
 
 const alertDialog = ref(false);
 const alertDialogMessage = ref("");
 const loading = ref(false);
 
-const user = reactive ({
+const user = reactive({
   id: "user",
-  password: "12345"
+  password: "12345",
 });
 
 async function handleLogin() {
   alertDialog.value = true;
   loading.value = true;
 
-  const result = await apiAuth.login(user);
+  const result = await auth.login(user);
 
   if (result === "success") {
     alertDialog.value = false;
+    router.push("/board/list");
   } else if (result === "fail-401") {
     alertDialogMessage.value = "로그인 실패: 아이디 또는 패스워드가 일치하지 않습니다";
   } else {
