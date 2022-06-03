@@ -13,7 +13,7 @@
           <input type="text" class="titleinput form-control" placeholder="글 제목을 입력하세요." v-model="board.btitle"/>
         </div>
         <div class="imagebox">
-          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple/>
+          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" max="3" multiple/>
           <div class="imagethumbnail">
             <img class="singleimg" id="img1"/>
             <img class="singleimg" id="img2" />
@@ -52,21 +52,26 @@ const board = reactive({
 });
 
 const images = ref(null);
-// const img1 = ref(null);
-// const img2 = ref(null);
-// const img3 = ref(null);
 
 async function handleAdd() {
-  const multipartFormData = new FormData();
-  multipartFormData.append('btitle', board.btitle);
-  multipartFormData.append('bmemo', board.bmemo);
-  multipartFormData.append('mid', store.state.userId);
-  for(let i=0; i<images.value.files.length; i++) {
-    multipartFormData.append('imagesArray', images.value.files[i]);
+  // 선택한 첨부파일 개수확인.
+  let imglength = images.value.files.length;
+  console.log('imglength');
+  if(imglength < 4) {
+    const multipartFormData = new FormData();
+    multipartFormData.append('btitle', board.btitle);
+    multipartFormData.append('bmemo', board.bmemo);
+    multipartFormData.append('mid', store.state.userId);
+    for(let i=0; i<images.value.files.length; i++) {
+      multipartFormData.append('imagesArray', images.value.files[i]);
+    }
+    console.log('multipartFormData : ' + multipartFormData);
+    await apiBoard.createBoard(multipartFormData);
+    router.push('/board/list');
+  } else {
+    alert('첨부파일은 최대 3개까지 첨부 가능합니다.');
   }
-  console.log('multipartFormData : ' + multipartFormData);
-  await apiBoard.createBoard(multipartFormData);
-  router.push('/board/list');
+
 }
 
 // 취소 버튼 클릭시에, 목록화면으로 이동.// pager 넘기기~~~~~~~
@@ -74,17 +79,20 @@ function handleCancel() {
   router.push('/board/list');
 }
 
-// watch(images
+watch(() => images.value
+    , (newImages, oldImages) => {
+    console.log('watch()');
+    }
+    // , {deep: true}
+);
+// watch(images.value
 //     , (newImages, oldImages) => {
-//       console.log('newImages.value.files.length : ' + newImages.value.files.length);
-//       for(let i; i<newImages.value.files.length; i++) {
-//       //  let html = `<img class="singleimg" src="{URL.createObjectURL(images.value.files[i])}" />`;
-//         let targetRef = `img{i}`;
-//         console.log('targetRef : ' + targetRef);
-//         this.$refs.targetRef.src = URL.createObjectURL(images.value.files[i]);
-//       }
+//     console.log('watch()');
 //     }
+//     // , {deep: true}
 // );
+
+// 첨부할 사진 선택시에 미리보기 제공.
 function previewImg() {
   console.log('previewImg()');
   console.log('previewImg() - images.value.files : ' + images.value.files);
@@ -104,42 +112,42 @@ function previewImg() {
     // 
   }
 }
-onMounted(() => {
-  console.log('onMounted()');
-  console.log('onMounted() - images.value.files : ' + images.value.files);
-  console.log('onMounted() - images.value.files.length : ' + images.value.files.length);
-  // function previewImg() {
-  //   console.log('onMounted() - previewImg()');
-  //   console.log('onMounted() - previewImg() - images.value.files : ' + images.value.files);
-  //   console.log('onMounted() - previewImg() - images.value.files.length : ' + images.value.files.length);
-  //   if(images.value.files.length != 0) {
-  //     for(let i; i<images.value.files.length; i++) {
-  //       // let html = `<img class="singleimg" src="{URL.createObjectURL(images.value.files[i])}" />`;
-  //       // this.$refs.imagethumbnail.innerHtml(html);
-  //       let targetRef = `img{i}`;
-  //       console.log('targetRef : ' + targetRef);
-  //       img1.value = URL.createObjectURL(images.value.files[i]);
-  //       // this.$refs.targetRef.src = URL.createObjectURL(images.value.files[i]);
-  //     }
-  //   } else {
-  //     // battach.value = null;
-  //   }
-  // }
+// onMounted(() => {
+//   console.log('onMounted()');
+//   console.log('onMounted() - images.value.files : ' + images.value.files);
+//   console.log('onMounted() - images.value.files.length : ' + images.value.files.length);
+//   // function previewImg() {
+//   //   console.log('onMounted() - previewImg()');
+//   //   console.log('onMounted() - previewImg() - images.value.files : ' + images.value.files);
+//   //   console.log('onMounted() - previewImg() - images.value.files.length : ' + images.value.files.length);
+//   //   if(images.value.files.length != 0) {
+//   //     for(let i; i<images.value.files.length; i++) {
+//   //       // let html = `<img class="singleimg" src="{URL.createObjectURL(images.value.files[i])}" />`;
+//   //       // this.$refs.imagethumbnail.innerHtml(html);
+//   //       let targetRef = `img{i}`;
+//   //       console.log('targetRef : ' + targetRef);
+//   //       img1.value = URL.createObjectURL(images.value.files[i]);
+//   //       // this.$refs.targetRef.src = URL.createObjectURL(images.value.files[i]);
+//   //     }
+//   //   } else {
+//   //     // battach.value = null;
+//   //   }
+//   // }
 
-  watch(images, (newImages, oldImages) => {
-        console.log('watch() - images.value.files.item.length : ');
-        console.log(images.value.files.item.length);
-        // for(let i; i<newImages.value.files.length; i++) {
-        // //  let html = `<img class="singleimg" src="{URL.createObjectURL(images.value.files[i])}" />`;
-        //   let targetRef = `img{i}`;
-        //   console.log('targetRef : ' + targetRef);
-        //   this.$refs.targetRef.src = URL.createObjectURL(images.value.files[i]);
-        // }
-      }
-      , {deep: true}
-  );
+//   watch(images, (newImages, oldImages) => {
+//         console.log('watch() - images.value.files.item.length : ');
+//         console.log(images.value.files.item.length);
+//         // for(let i; i<newImages.value.files.length; i++) {
+//         // //  let html = `<img class="singleimg" src="{URL.createObjectURL(images.value.files[i])}" />`;
+//         //   let targetRef = `img{i}`;
+//         //   console.log('targetRef : ' + targetRef);
+//         //   this.$refs.targetRef.src = URL.createObjectURL(images.value.files[i]);
+//         // }
+//       }
+//       , {deep: true}
+//   );
 
-});
+// });
 
 
 </script>
