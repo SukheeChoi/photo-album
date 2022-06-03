@@ -13,11 +13,11 @@
           <input type="text" class="titleinput form-control" placeholder="글 제목을 입력하세요." v-model="board.btitle"/>
         </div>
         <div class="imagebox">
-          <input type="file" class="form-control-file mb-2" ref="images" multiple/>
+          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple/>
           <div class="imagethumbnail">
-            <img class="singleimg" src="@/assets/포르쉐.png" />
-            <img class="singleimg" src="@/assets/포르쉐.png" />
-            <img class="singleimg" src="@/assets/포르쉐.png" />
+            <img class="singleimg" id="img1"/>
+            <img class="singleimg" id="img2" />
+            <img class="singleimg" id="img3" />
           </div>
         </div>
         <div class="memocontainer">
@@ -37,7 +37,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch, watchEffect } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import apiBoard from '@/apis/board';
@@ -52,16 +52,20 @@ const board = reactive({
 });
 
 const images = ref(null);
+// const img1 = ref(null);
+// const img2 = ref(null);
+// const img3 = ref(null);
 
 async function handleAdd() {
   const multipartFormData = new FormData();
-  // multipartFormData.append('btitle', board.btitle);
-  // multipartFormData.append('bmemo', board.bmemo);
-  // multipartFormData.append('mid', store.state.userId);
+  multipartFormData.append('btitle', board.btitle);
+  multipartFormData.append('bmemo', board.bmemo);
+  multipartFormData.append('mid', store.state.userId);
   for(let i=0; i<images.value.files.length; i++) {
     multipartFormData.append('imagesArray', images.value.files[i]);
   }
-  await apiBoard.createBoard(board, multipartFormData);
+  console.log('multipartFormData : ' + multipartFormData);
+  await apiBoard.createBoard(multipartFormData);
   router.push('/board/list');
 }
 
@@ -69,6 +73,74 @@ async function handleAdd() {
 function handleCancel() {
   router.push('/board/list');
 }
+
+// watch(images
+//     , (newImages, oldImages) => {
+//       console.log('newImages.value.files.length : ' + newImages.value.files.length);
+//       for(let i; i<newImages.value.files.length; i++) {
+//       //  let html = `<img class="singleimg" src="{URL.createObjectURL(images.value.files[i])}" />`;
+//         let targetRef = `img{i}`;
+//         console.log('targetRef : ' + targetRef);
+//         this.$refs.targetRef.src = URL.createObjectURL(images.value.files[i]);
+//       }
+//     }
+// );
+function previewImg() {
+  console.log('previewImg()');
+  console.log('previewImg() - images.value.files : ' + images.value.files);
+  console.log('previewImg() - images.value.files.length : ' + images.value.files.length);
+  if(images.value.files.length !== 0) {
+    console.log('images.value.files.length !== 0');
+    for(let i=0; i<images.value.files.length; i++) {
+      var reader = new FileReader();
+      reader.onload = function(event) {
+        let imgtag = document.getElementById(`img${i+1}`);
+        imgtag.src = event.target.result;
+        imgtag.style.visibility = 'visible';
+      };
+      reader.readAsDataURL(images.value.files[i]);
+    }
+  } else {
+    // 
+  }
+}
+onMounted(() => {
+  console.log('onMounted()');
+  console.log('onMounted() - images.value.files : ' + images.value.files);
+  console.log('onMounted() - images.value.files.length : ' + images.value.files.length);
+  // function previewImg() {
+  //   console.log('onMounted() - previewImg()');
+  //   console.log('onMounted() - previewImg() - images.value.files : ' + images.value.files);
+  //   console.log('onMounted() - previewImg() - images.value.files.length : ' + images.value.files.length);
+  //   if(images.value.files.length != 0) {
+  //     for(let i; i<images.value.files.length; i++) {
+  //       // let html = `<img class="singleimg" src="{URL.createObjectURL(images.value.files[i])}" />`;
+  //       // this.$refs.imagethumbnail.innerHtml(html);
+  //       let targetRef = `img{i}`;
+  //       console.log('targetRef : ' + targetRef);
+  //       img1.value = URL.createObjectURL(images.value.files[i]);
+  //       // this.$refs.targetRef.src = URL.createObjectURL(images.value.files[i]);
+  //     }
+  //   } else {
+  //     // battach.value = null;
+  //   }
+  // }
+
+  watch(images, (newImages, oldImages) => {
+        console.log('watch() - images.value.files.item.length : ');
+        console.log(images.value.files.item.length);
+        // for(let i; i<newImages.value.files.length; i++) {
+        // //  let html = `<img class="singleimg" src="{URL.createObjectURL(images.value.files[i])}" />`;
+        //   let targetRef = `img{i}`;
+        //   console.log('targetRef : ' + targetRef);
+        //   this.$refs.targetRef.src = URL.createObjectURL(images.value.files[i]);
+        // }
+      }
+      , {deep: true}
+  );
+
+});
+
 
 </script>
 
@@ -129,6 +201,8 @@ function handleCancel() {
   width: 220px;
   height: 150px;
   margin-left: 2%;
+  background-size: cover;
+  visibility: hidden;
 }
 
 .memoinput {

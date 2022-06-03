@@ -5,7 +5,7 @@ import apiAuth from '@/apis/auth';
 async function getBoardList(pageNo=1) {
   let response = null;
   try {
-    response = await axios.get("/board/list", pageNo);
+    response = await axios.get("/board2/list", pageNo);
     return response.data;
   } catch (error) {
     console.log(error);
@@ -13,10 +13,10 @@ async function getBoardList(pageNo=1) {
 }
 
 // 게시물 작성(멀티 파트로 구성해서 전달)
-async function createBoard(board, multipartFormData) {
+async function createBoard(multipartFormData) {
   let dbBoard = null;
   try {
-    const response = await axios.post('/board/', board, multipartFormData);
+    const response = await axios.post('/board2/', multipartFormData);
     dbBoard = response.data;
   } catch(error) {
     if(error.response) {
@@ -24,7 +24,7 @@ async function createBoard(board, multipartFormData) {
       if(error.response.status === 403) {
         if(await apiAuth.refreshToken()) {
           console.log('~~~~~~~~~~~~~~~~');
-          const response = await axios.post('/board/', board, multipartFormData);
+          const response = await axios.post('/board2/', multipartFormData);
           dbBoard = response.data;
         }
       }
