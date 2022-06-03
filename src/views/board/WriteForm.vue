@@ -1,33 +1,35 @@
 <template>
   <div class="container2 d-flex">
     <div class="whitespace flex-fill"></div>
-    <div class="center flex-fill line">
+    <div class="center flex-fill">
       <div class="writeFormHeader">
         게시글 작성
       </div>
-      <div class="writeform">
+      <form v-on:submit.prevent="handleAdd" class="writeform">
         <div class="titlebox">
           <div class="title">
             제목
           </div>
-          <input class="titleinput" type="text" placeholder="글 제목을 입력하세요." />
+          <input type="text" class="titleinput form-control" placeholder="글 제목을 입력하세요." v-model="board.btitle"/>
         </div>
         <div class="imagebox">
-          <button class="btn btn-primary btn-sm">사진첨부</button>
+          <input type="file" class="form-control-file mb-2" ref="images" multiple/>
           <div class="imagethumbnail">
-            <img class="singleimg" src="@/assets/logo.png" />
-            <img class="singleimg" src="@/assets/logo.png" />
-            <img class="singleimg" src="@/assets/logo.png" />
+            <img class="singleimg" src="@/assets/포르쉐.png" />
+            <img class="singleimg" src="@/assets/포르쉐.png" />
+            <img class="singleimg" src="@/assets/포르쉐.png" />
           </div>
         </div>
         <div class="memocontainer">
-          <input class="memoinput" type="text" placeholder="메모할 내용을 입력하세요." />
+          <input type="text" class="memoinput form-control" placeholder="메모할 내용을 입력하세요." v-model="board.bmemo"/>
         </div>
-      </div>
-      <div class="bottombtn">
-        <button class="btn btn-primary btn-sm mr-1">취소</button>
-        <button class="btn btn-primary btn-sm">저장</button>
-      </div>
+
+        <div class="bottombtn">
+          <input type="button" class="btn btn-primary btn-sm mr-1" value="취소" v-on:click="handleCancel"/>
+          <input type="submit" class="btn btn-primary btn-sm" value="저장"/>
+        </div>
+      </form>
+
     </div>
     <div class="whitespace flex-fill"></div>
     
@@ -35,6 +37,39 @@
 </template>
 
 <script setup>
+import { reactive, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import apiBoard from '@/apis/board';
+
+const store = useStore();
+const router = useRouter();
+
+const board = reactive({
+  btitle: ''
+  , bmemo: ''
+  , mid: store.state.userId
+});
+
+const images = ref(null);
+
+async function handleAdd() {
+  const multipartFormData = new FormData();
+  // multipartFormData.append('btitle', board.btitle);
+  // multipartFormData.append('bmemo', board.bmemo);
+  // multipartFormData.append('mid', store.state.userId);
+  for(let i=0; i<images.value.files.length; i++) {
+    multipartFormData.append('imagesArray', images.value.files[i]);
+  }
+  await apiBoard.createBoard(board, multipartFormData);
+  router.push('/board/list');
+}
+
+// 취소 버튼 클릭시에, 목록화면으로 이동.// pager 넘기기~~~~~~~
+function handleCancel() {
+  router.push('/board/list');
+}
+
 </script>
 
 <style scoped>
@@ -73,7 +108,7 @@
   font-size: 25px;
 }
 .titleinput {
-  width: 30rem;
+  width: 50rem;
   height: 3rem;
   font-size: 17px;
 }
@@ -91,10 +126,13 @@
   flex-direction: row;
 }
 .singleimg {
+  width: 220px;
+  height: 150px;
   margin-left: 2%;
 }
+
 .memoinput {
-  width: 30rem;
+  width: 50rem;
   height: 7rem;
   font-size: 17px;
 }

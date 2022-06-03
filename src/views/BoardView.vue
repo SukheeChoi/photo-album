@@ -1,6 +1,6 @@
 <template>
   <div class="board">
-    <router-view class="mx-5"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
