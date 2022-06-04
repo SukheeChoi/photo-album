@@ -14,6 +14,8 @@ async function getBoardList(pageNo) {
   }
 }
 
+
+
 // 게시물 작성(멀티 파트로 구성해서 전달)
 async function createBoard(multipartFormData) {
   let dbBoard = null;

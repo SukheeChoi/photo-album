@@ -10,23 +10,23 @@
           <div class="title">
             제목
           </div>
-          <input class="titleinput" type="text" placeholder="에버랜드 소풍간 날" />
+          <input type="text" class="titleinput form-control" v-model="board.btitle"/>
         </div>
         <div class="imagebox">
-          <button class="btn btn-primary btn-sm">사진첨부</button>
+          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple/>
           <div class="imagethumbnail">
-            <img class="singleimg" src="@/assets/logo.png" />
-            <img class="singleimg" src="@/assets/logo.png" />
-            <img class="singleimg" src="@/assets/logo.png" />
+            <img class="singleimg" id="img1"/>
+            <img class="singleimg" id="img2" />
+            <img class="singleimg" id="img3" />
           </div>
         </div>
         <div class="memocontainer">
-          <input class="memoinput" type="text" placeholder="2021년 06월 02일 날씨 맑음. 가족여행." />
+          <input type="text" class="memoinput form-control"  v-model="board.bmemo"/>
         </div>
       </div>
       <div class="bottombtn">
-        <button class="btn btn-primary btn-sm mr-1">취소</button>
-        <button class="btn btn-primary btn-sm">수정</button>
+        <input type="button" class="btn btn-primary btn-sm mr-1" value="취소" v-on:click="handleCancel"/>
+        <input type="submit" class="btn btn-primary btn-sm" value="수정"/>
       </div>
     </div>
     <div class="whitespace flex-fill"></div>
@@ -35,6 +35,41 @@
 </template>
 
 <script setup>
+import { onMounted, reactive, ref, watch, watchEffect } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import apiBoard from '@/apis/board';
+
+const store = useStore();
+const router = useRouter();
+const board = ref(null);
+// const bno = route.query.bno;
+const bno = 10129;
+const images = ref(null);
+const newimages = ref(null);
+
+async function getBoard() {
+  const dbBoard = await apiBoard.readBoard(bno, false);
+  board.value = dbBoard;//board2에 imageNum필드 추가필요.
+  // images테이블에서 bno가 일치하는 행들의 ino를 받아옴.
+  let inolist = await apiBoard.getInos(bno);
+  // ino리스트의 length만큼 반복하면서 이미지 가져오기.
+  for(let i=0; i<inolist.length; i++) {
+    const blob = await apiBoard.downloadBoardAttach(inolist[i]);
+    var reader = new FileReader();
+    reader.onload = function(event) {
+      let imgtag = document.getElementById(`img${i+1}`);
+      imgtag.src = event.target.result;
+      imgtag.style.visibility = 'visible';
+    };
+    reader.readAsDataURL(images.value.files[i]);
+// battach.value = URL.createObjectURL(blob);
+  }
+
+}
+
+getBoard();
+
 </script>
 
 <style scoped>
@@ -91,10 +126,13 @@
   flex-direction: row;
 }
 .singleimg {
+  width: 220px;
+  height: 150px;
   margin-left: 2%;
-}
+  background-size: cover;
+  visibility: hidden;}
 .memoinput {
-  width: 30rem;
+  width: 50rem;
   height: 7rem;
   font-size: 17px;
 }

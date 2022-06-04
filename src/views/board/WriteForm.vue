@@ -13,7 +13,7 @@
           <input type="text" class="titleinput form-control" placeholder="글 제목을 입력하세요." v-model="board.btitle"/>
         </div>
         <div class="imagebox">
-          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" max="3" multiple/>
+          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple/>
           <div class="imagethumbnail">
             <img class="singleimg" id="img1"/>
             <img class="singleimg" id="img2" />
