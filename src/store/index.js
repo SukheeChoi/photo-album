@@ -5,7 +5,7 @@ import axiosConfig from "@/apis/axiosConfig";
 export default createStore({
   state: {
     userId: "user", //mid
-    authToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTQzMTcxODksIm1pZCI6InVzZXIiLCJhdXRob3JpdHkiOiJST0xFX1VTRVIifQ.KhcfOA4937ILJgUafyin3K8seneJJRPPck_xsZdP0ag", //AccessToken
+    authToken: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTQ4NjEwNTgsIm1pZCI6InVzZXIiLCJhdXRob3JpdHkiOiJST0xFX1VTRVIifQ.vsLtectHqU9xkJpi6POcY4G0gDqFXSmK8XaWOV0fgoc", //AccessToken
   },
   getters: {
     getUserId(state, getters, rootState, rootGetters) {

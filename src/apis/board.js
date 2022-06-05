@@ -93,11 +93,22 @@ async function getImagesLee(bno) {
   }
 }
 
+async function getImage(ino) {
+  try {
+    let image = await axios.get(`/board2/image/${ino}`, { responseType: "blob" });
+
+    return image.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export default {
   getBoardList,
   createBoard,
   getBoard,
   getImages,
   downloadImage,
-  getImagesLee,
+  getImagesLee
+  , getImage
 };

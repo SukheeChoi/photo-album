@@ -27,7 +27,7 @@
         </div>
       </div>
       <div>
-        <router-link to="/board/updateForm" class="btn btn-info btn-sm mr-2">수정</router-link>
+        <router-link to="/board/updateform" class="btn btn-info btn-sm mr-2">수정</router-link>
         <button class="btn btn-info btn-sm">삭제</button>
       </div>
     </div>

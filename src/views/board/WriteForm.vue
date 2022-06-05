@@ -5,7 +5,7 @@
       <div class="writeFormHeader">
         게시글 작성
       </div>
-      <form v-on:submit.prevent="handleAdd" class="writeform">
+      <form v-if="board" v-on:submit.prevent="handleAdd" class="writeform">
         <div class="titlebox">
           <div class="title">
             제목
@@ -15,9 +15,13 @@
         <div class="imagebox">
           <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple/>
           <div class="imagethumbnail">
-            <img class="singleimg" id="img1"/>
+            <!-- <img class="singleimg" :src="" /> -->
+            <!-- <img class="singleimg" id="img1"/>
             <img class="singleimg" id="img2" />
-            <img class="singleimg" id="img3" />
+            <img class="singleimg" id="img3" /> -->
+            <div v-for="(blob, index) in bloblist" :key="index">
+              <img class="singleimg" :src="blob" />
+            </div>
           </div>
         </div>
         <div class="memocontainer">
@@ -52,6 +56,7 @@ const board = reactive({
 });
 
 const images = ref(null);
+const bloblist = ref([]);
 
 async function handleAdd() {
   // 선택한 첨부파일 개수확인.
@@ -79,12 +84,6 @@ function handleCancel() {
   router.push('/board/list');
 }
 
-watch(() => images.value
-    , (newImages, oldImages) => {
-    console.log('watch()');
-    }
-    // , {deep: true}
-);
 // watch(images.value
 //     , (newImages, oldImages) => {
 //     console.log('watch()');
@@ -94,23 +93,24 @@ watch(() => images.value
 
 // 첨부할 사진 선택시에 미리보기 제공.
 function previewImg() {
-  console.log('previewImg()');
-  console.log('previewImg() - images.value.files : ' + images.value.files);
-  console.log('previewImg() - images.value.files.length : ' + images.value.files.length);
-  if(images.value.files.length !== 0) {
-    console.log('images.value.files.length !== 0');
-    for(let i=0; i<images.value.files.length; i++) {
-      var reader = new FileReader();
-      reader.onload = function(event) {
-        let imgtag = document.getElementById(`img${i+1}`);
-        imgtag.src = event.target.result;
-        imgtag.style.visibility = 'visible';
-      };
-      reader.readAsDataURL(images.value.files[i]);
-    }
-  } else {
-    // 
+  // 반응형 array와 URL.createObjectUR를 이용한 미리보기 제공.
+  bloblist.value = [];
+  for(let imageFile of images.value.files) {
+    bloblist.value.push( URL.createObjectURL(imageFile) );
   }
+  // FileReader()를 이용한 미리보기 제공.
+  // if(images.value.files.length !== 0) {
+  //   console.log('images.value.files.length !== 0');
+  //   for(let i=0; i<images.value.files.length; i++) {
+  //     var reader = new FileReader();
+  //     reader.onload = function(event) {
+  //       let imgtag = document.getElementById(`img${i+1}`);
+  //       imgtag.src = event.target.result;
+  //       imgtag.style.visibility = 'visible';
+  //     };
+  //     reader.readAsDataURL(images.value.files[i]);
+  //   }
+  // }
 }
 // onMounted(() => {
 //   console.log('onMounted()');
@@ -210,7 +210,7 @@ function previewImg() {
   height: 150px;
   margin-left: 2%;
   background-size: cover;
-  visibility: hidden;
+  /* visibility: hidden; */
 }
 
 .memoinput {
