@@ -1,20 +1,15 @@
 <template>
   <div>
-    <div>
-      <div class="form">
-        <div class="logintitle">로그인</div>
-        <div>
-          <input type="text" class="form-control" id="userId" placeholder="아이디" v-model="user.id" />
-          <input type="password" class="form-control" placeholder="비밀번호" v-model="user.password" />
+    <div class="form">
+      <div class="logintitle">로그인</div>
+      <div>
+        <input type="text" class="form-control" id="userId" placeholder="아이디" v-model="user.id" />
+        <input type="password" class="form-control" placeholder="비밀번호" v-model="user.password" />
 
-          <!-- <c:if test="${error != null}">
-              <small style="color: red" id="loginError">${error}</small>
-            </c:if> -->
-          <button class="loginbutton" @click="handleLogin">로그인</button>
-        </div>
+        <button class="loginbutton" @click="handleLogin">로그인</button>
       </div>
-      <AlertDialog v-if="alertDialog" :message="alertDialogMessage" :loading="loading" @close="alertDialog = false" />
     </div>
+    <AlertDialog v-if="alertDialog" :message="alertDialogMessage" :loading="loading" @close="alertDialog = false" />
   </div>
 </template>
 
@@ -56,15 +51,11 @@ async function handleLogin() {
 
 <style scoped>
 .form {
-  /* position: relative; */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: static;
+  margin: 6em auto;
   border-radius: 1em;
   width: 28em;
   padding: 1.5em;
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .logintitle {

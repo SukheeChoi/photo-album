@@ -1,7 +1,6 @@
 import { createStore } from "vuex";
 import counter from "./counter";
 import axiosConfig from "@/apis/axiosConfig";
-import context from "react-bootstrap/esm/AccordionContext";
 
 export default createStore({
   state: {

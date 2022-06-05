@@ -1,20 +1,20 @@
 <template>
-  <div class="boardList mx-0 px-0" >
+  <div class="boardList mx-0 px-0">
     <div class="container-fluid row mx-0">
-        <div class="col-2"></div>
-        <div class="col-8 row">
-          <div class="col-3 divItem pt-2" v-for="n in 12" :key="n">
-            <div class="w-100 px-3" style="display: flex; justify-content: center; flex-direction: column;">
-              <img src="@/assets/logo.png" class="d-block img" style="object-fit: cover;" alt="..."/>
-              <div>
-                <dt>제목1</dt>
-                <dd>1994-02-26</dd>
-              </div>
+      <div class="col-2"></div>
+      <div class="col-8 row">
+        <div class="col-3 divItem pt-2" v-for="n in 12" :key="n">
+          <div class="w-100 px-3" style="display: flex; justify-content: center; flex-direction: column">
+            <img src="@/assets/logo.png" class="d-block img" style="object-fit: cover" alt="..." />
+            <div>
+              <dt>제목1</dt>
+              <dd>1994-02-26</dd>
             </div>
           </div>
-          <div class="col-12 d-flex align-content-end justify-content-end">
-						<a type="button" class="btn btn-info border pt-1 mt-1" style="font-size: 20px; width: 90px;">글쓰기</a>
-					</div>
+        </div>
+        <div class="col-12 d-flex align-content-end justify-content-end">
+          <a type="button" class="btn btn-info border pt-1 mt-1" style="font-size: 20px; width: 90px">글쓰기</a>
+        </div>
       </div>
       <div class="col-2"></div>
     </div>
@@ -44,18 +44,15 @@ async function getBoardList(pageNo) {
 getBoardList(1);
 </script>
 
-<style scoped>
-
-
-</style>
+<style scoped></style>
 
 <style>
-  .divItem{
-    border-bottom: 2px solid #E2E2E2;
-  }
-  .img{
-    width: 100%; height: auto;
-    max-height: 120px;
-  }
-
+.divItem {
+  border-bottom: 2px solid #e2e2e2;
+}
+.img {
+  width: 100%;
+  height: auto;
+  max-height: 120px;
+}
 </style>

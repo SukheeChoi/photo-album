@@ -1,23 +1,18 @@
 <template>
-  <div>
+<div>
+  <div class="form">
+    <div class="jointitle">회원가입</div>
     <div>
-      <div class="form">
-        <div class="logintitle">회원가입</div>
-        <div>
-          <input type="text" class="form-control" id="userId" placeholder="아이디" v-model="user.id" />
-          <input type="password" class="form-control" placeholder="비밀번호" v-model="user.password" />
-          <input type="text" class="form-control" placeholder="이름" v-model="user.name" />
-          <input type="text" class="form-control" placeholder="이메일" v-model="user.email" />
+      <input type="text" class="form-control" id="userId" placeholder="아이디" v-model="user.id" />
+      <input type="password" class="form-control" placeholder="비밀번호" v-model="user.password" />
+      <input type="text" class="form-control" placeholder="이름" v-model="user.name" />
+      <input type="text" class="form-control" placeholder="이메일" v-model="user.email" />
 
-          <!-- <c:if test="${error != null}">
-            <small style="color: red" id="loginError">${error}</small>
-          </c:if> -->
-          <button class="joinbutton" @click="handleJoin">회원가입</button>
-        </div>
-      </div>
-      <AlertDialog v-if="alertDialog" :message="alertDialogMessage" :loading="loading" @close="alertDialog = false" />
+      <button class="joinbutton" @click="handleJoin">회원가입</button>
     </div>
   </div>
+  <AlertDialog v-if="alertDialog" :message="alertDialogMessage" :loading="loading" @close="alertDialog = false" />
+</div>
 </template>
 
 <script setup>
@@ -63,18 +58,14 @@ async function handleJoin() {
 
 <style scoped>
 .form {
-  /* position: relative; */
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: static;
+  margin: 6em auto;
   border-radius: 1em;
   width: 28em;
   padding: 1.5em;
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.8);
 }
 
-.logintitle {
+.jointitle {
   text-align: center;
   font-size: 2.5em;
   font-weight: 400;
