@@ -62,23 +62,26 @@ if (pageNo === "undefined") {
 async function getBoardList(pageNo) {
   const result = await apiBoard.getBoardList(pageNo);
   if (result.result === "success") {
-    const resultLee = result.data.boards.map(async (data) => {
-      console.log(data);
-      const resultlee2 = data.bmemo ? await apiBoard.downloadImage(data.bmemo) : null;
-      return { ...data, resultlee2 };
-    });
-    const lee = await Promise.all(resultLee);
 
-    console.log(lee);
-    const lastData = lee.map((img) => {
-      const imgUrl = img.resultlee2 ? URL.createObjectURL(img.resultlee2) : "@/assets/noImage.png";
+    //bmemo에 담긴 ino을 이용해 map함수로 하나씩 요청을 보낸다. 
+    const resultData = result.data.boards.map(async (data) => {
+      const responseData = data.bmemo ? await apiBoard.downloadImage(data.bmemo) : null;
+      return { ...data, responseData };
+    });
+
+    //받아온 데이터들 promise.all로 비동기 처리 해준다.
+    const promiseAll = await Promise.all(resultData);
+
+    //받아온 데이터들 중 blob데이터를 URL로 바꾸는 코드
+    const lastData = promiseAll.map((img) => {
+      const imgUrl = img.responseData ? URL.createObjectURL(img.responseData) : null;
       return { ...img, imgUrl };
     });
-    console.log(lastData);
+    
     page.value = { ...result.data, lastData };
-    console.log(page.value);
+    
   } else {
-    router.push("/board");
+    router.push("/board/list");
   }
 }
 
@@ -115,7 +118,7 @@ function goWriteForm(pageNo = 1) {
   if (sessionStorage.getItem("userId")) {
     router.push(`/board/writeform?pageNo=` + pageNo);
   } else {
-    alert("로그인해주세요")
+    alert("로그인 해주세요")
   }
 }
 </script>
