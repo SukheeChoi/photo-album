@@ -14,8 +14,6 @@ async function getBoardList(pageNo) {
   }
 }
 
-
-
 // 게시물 작성(멀티 파트로 구성해서 전달)
 async function createBoard(multipartFormData) {
   let dbBoard = null;
@@ -93,15 +91,41 @@ async function getImagesLee(bno) {
   }
 }
 
+// 먼저 송신받는 이미지부터 렌더링하기 위한 매소드.
 async function getImage(ino) {
   try {
     let image = await axios.get(`/board2/image/${ino}`, { responseType: "blob" });
-
     return image.data;
   } catch (error) {
     console.log(error);
   }
 }
+
+// 게시물 수정시에, 기존 첨부파일 중 삭제되어야 하는 이미지가 있다면, updateBoard() 내부에서 해당 메소드를 실행시킴. 
+async function deleteImages(deleteInoList) {
+  try {
+    await axios.delete('/board2/deleteImages', deleteInoList);
+  } catch(error) {
+    console.log(error);
+  }
+}
+
+// 게시물 수정하고, 수정한 데이터 받아옴.(수정 성공시, bno를 read페이지에 넘겨서 수정된 결과물을 사용자에게 보여주기.)
+async function updateBoard(multipartFormData) {
+  try {
+    await axios.put('/board2/', multipartFormData);
+  } catch(error) {
+    console.log(error);
+  }
+}
+// async function updateBoard(multipartFormData, deleteInoList) {
+//   try {
+//     // await deleteImages(deleteInoList);
+//     await axios.put('/board2/', multipartFormData, deleteInoList);
+//   } catch(error) {
+//     console.log(error);
+//   }
+// }
 
 export default {
   getBoardList,
@@ -111,4 +135,5 @@ export default {
   downloadImage,
   getImagesLee
   , getImage
+  , updateBoard
 };

@@ -15,7 +15,6 @@
         <div class="imagebox">
           <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple/>
           <div class="imagethumbnail">
-            <!-- <img class="singleimg" :src="" /> -->
             <!-- <img class="singleimg" id="img1"/>
             <img class="singleimg" id="img2" />
             <img class="singleimg" id="img3" /> -->
