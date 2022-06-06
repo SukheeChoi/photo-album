@@ -19,9 +19,6 @@
             <div v-for="(blobObj, index) in bloblist" :key="index">
               <img class="singleimg presentImg" :src="blobObj.blob" data-label="present" :data-ino="blobObj.ino" :data-image-index="index" @click="deleteImg" />
             </div>
-            <!-- <div v-for="(blob, index) in bloblist" :key="index">
-              <img class="singleimg presentImg" :src="blob" data-label="present" :data-image-index="index" @click="deleteImg" />
-            </div> -->
             <!-- 새롭게 선택한 이미지의 미리보기. -->
             <div class="imagethumbnail" v-show="newBlobList != null">
               <div v-for="(blob, index) in newBlobList" :key="index">
@@ -49,11 +46,12 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import apiBoard from '@/apis/board';
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 const board = ref(null);
 const bno = route.query.bno;
 // const bno = 10129;
@@ -103,7 +101,6 @@ async function getBoard() {
   //   console.log(`bloblist.value[${i}].substring(5) : `  + bloblist.value[i].substring(5));
   //   console.log('for end - i : ' + i);
   // }
-
 }
 getBoard();
 
@@ -126,8 +123,10 @@ watch([bloblist, newBlobList]
 function appendPreviewImg() {
   // 반응형 array와 URL.createObjectUR를 이용한 미리보기 제공.
   newBlobList.value = [];
-  for(let imageFile of newimages.value.files) {
-    newBlobList.value.push( URL.createObjectURL(imageFile) );
+  if(newimages.value.files.length != 0) {
+    for(let imageFile of newimages.value.files) {
+      newBlobList.value.push( URL.createObjectURL(imageFile) );
+    }
   }
 }
 
@@ -147,13 +146,16 @@ function deleteImg(event) {
 async function handleUpdate() {
   // board.value.mid = store.state.userId;
   board.value.bno = bno;
-  board.value.deleteInoList = deleteInoList;
+  if(deleteInoList.length > 0) {
+    board.value.deleteInoList = deleteInoList;
+  }
   const multipartFormData = new FormData();
   multipartFormData.append('board'
                           , new Blob([JSON.stringify(board.value)]
                           , {type: "application/json"})
   );
-  if(newimages.value.files.length > 0) {
+  if(newimages.value.files.length != 0) {
+  // if(newimages.value.files.length > 0) {
     // let imagesArray = [];
     for(let i=0; i<newimages.value.files.length; i++) {
       // imagesArray.push(newimages.value.files[i]);
@@ -167,9 +169,9 @@ async function handleUpdate() {
   // }
   const result = await apiBoard.updateBoard(multipartFormData);
   console.log('result : ' + result);
-  // if(response.data) {
-
-  // }
+  if(result === 'success') {
+    router.push(`/board/read?bno=${bno}&hit=false`);
+  }
 }
 
 </script>

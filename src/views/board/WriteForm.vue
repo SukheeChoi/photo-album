@@ -70,8 +70,10 @@ async function handleAdd() {
       multipartFormData.append('imagesArray', images.value.files[i]);
     }
     console.log('multipartFormData : ' + multipartFormData);
-    await apiBoard.createBoard(multipartFormData);
-    router.push('/board/list');
+    const response = await apiBoard.createBoard(multipartFormData);
+    if(response.result === 'success') {
+      router.push(`/board/read?bno=${parseInt(response.bno)}&hit=false`);
+    }
   } else {
     alert('첨부파일은 최대 3개까지 첨부 가능합니다.');
   }
