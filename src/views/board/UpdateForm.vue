@@ -1,18 +1,18 @@
 <template>
   <div class="container2 d-flex">
     <div class="whitespace flex-fill"></div>
-    <div class="center flex-fill line">
+    <div class="center flex-fill">
       <div class="updateFormHeader">
         게시글 수정
       </div>
-      <form v-show="board" v-on:submit.prevent="handleUpdate"  class="updateform line">
+      <form v-show="board" v-on:submit.prevent="handleUpdate"  class="updateform">
         <div class="titlebox">
           <div class="title">
             제목
           </div>
           <input type="text" class="titleinput form-control" v-model="board.btitle" />
         </div>
-        <div v-show="bloblist != null" class="imagebox line">
+        <div v-show="bloblist != null" class="imagebo">
             <input v-show="showImageInput" type="file" class="form-control-file mb-2" @change="appendPreviewImg" ref="newimages" multiple />
           <div class="imagethumbnail">
             <!-- 게시글이 가지고 있던 기존 이미지의 미리보기. -->
@@ -225,11 +225,11 @@ async function handleUpdate() {
 .updateform {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  justify-content: center;
+  /* flex-grow: 1;
+  justify-content: center; */
   padding-top: 1rem;
   padding-bottom: 1rem;
-  /* padding-left: 30rem; */
+  padding-left: 22%;
 }
 
 .line {
@@ -275,12 +275,13 @@ async function handleUpdate() {
   width: 50rem;
   height: 7rem;
   font-size: 17px;
+  margin-top: 1rem;
 }
 .bottombtn {
   display: flex;
   justify-content: flex-end;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  padding-right: 30rem;
+  padding-right: 18%;
 }
 </style>
