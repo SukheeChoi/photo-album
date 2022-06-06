@@ -4,7 +4,7 @@ import apiAuth from "@/apis/auth";
 async function getMember(mid) {
   let response = null;
   try {
-    response = await axios.get(`/mypage/${mid}`);
+    response = await axios.get(`/member/${mid}`);
     return response.data;
   } catch (error) {
     console.log(error);

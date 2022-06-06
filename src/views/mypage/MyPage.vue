@@ -79,12 +79,13 @@ const store = useStore();
 const route = useRoute();
 const router = useRouter();
 const member = ref(null);
-const mid = route.query.mid;
+const mid = store.state.userId;
 const page = ref(null);
 
 async function getMember() {
   const result = await apiMember.getMember(mid);
   member.value = result;
+  console.log('member.value : ' + member.value);
 }
 getMember();
 
