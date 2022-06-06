@@ -85,8 +85,13 @@ if (pageNo === "undefined") {
 }
 
 //Rest API와 통신해서 페이지에 대한 정보(게시물 목록+페이저)
+<<<<<<< HEAD
 async function getBoardList2(pageNo) {
   const result = await apiBoard.getBoardList2(pageNo);
+=======
+async function getBoardList(pageNo) {
+  const result = await apiBoard.getBoardListById(pageNo, mid);
+>>>>>>> 70c85b8963b5a2d69973da1a2ed86d4b1f5d2a6b
   if (result.result === "success") {
     //bmemo에 담긴 ino을 이용해 map함수로 하나씩 요청을 보낸다.
     const resultData = result.data.boards.map(async (data) => {

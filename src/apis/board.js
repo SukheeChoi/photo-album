@@ -1,11 +1,24 @@
 import axios from "axios";
 import apiAuth from "@/apis/auth";
 
+
 //게시물 목록 요청
 async function getBoardList(pageNo) {
   let response = null;
   try {
     response = await axios.get("/board2/list", { params: { pageNo } }); //queryString 방식으로 넘기기, 이름이 같으면 생략 가능
+
+    return { result: "success", data: response.data };
+  } catch (error) {
+    console.log(error);
+    console.log("실패!");
+  }
+}
+async function getBoardListById(pageNo, mid) {
+  let response = null;
+  console.log('getBoardListById - mid : ' + mid);
+  try {
+    response = await axios.get("/board2/list", { params: { pageNo, mid } }); //queryString 방식으로 넘기기, 이름이 같으면 생략 가능
 
     return { result: "success", data: response.data };
   } catch (error) {
@@ -137,8 +150,16 @@ export default {
   getBoard,
   getImages,
   downloadImage,
+<<<<<<< HEAD
   getImagesBlob,
   getImage,
   updateBoard,
   deleteBoard
+=======
+  getImagesBlob
+  , getImage
+  , updateBoard
+  , deleteBoard
+  , getBoardListById
+>>>>>>> 70c85b8963b5a2d69973da1a2ed86d4b1f5d2a6b
 };

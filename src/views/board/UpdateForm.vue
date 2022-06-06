@@ -13,7 +13,7 @@
           <input type="text" class="titleinput form-control" v-model="board.btitle" />
         </div>
         <div v-show="bloblist != null" class="imagebo">
-            <input v-show="showImageInput" type="file" class="form-control-file mb-2" @change="appendPreviewImg" ref="newimages" multiple />
+            <input v-show="showImageInput" type="file" id="files" class="form-control-file mb-2" @change="appendPreviewImg" ref="newimages" multiple />
           <div class="imagethumbnail">
             <!-- 게시글이 가지고 있던 기존 이미지의 미리보기. -->
             <div v-for="(blobObj, index) in bloblist" :key="index">
@@ -40,6 +40,7 @@
     </div>
     <div class="whitespace flex-fill"></div>
     
+    <AlertDialog v-if="dialog" :message="dialogMessage" @close="dialog = false" />
   </div>
 </template>
 
@@ -48,6 +49,7 @@ import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import apiBoard from '@/apis/board';
+import AlertDialog from "@/components/AlertDialog.vue";
 
 const store = useStore();
 const route = useRoute();
@@ -64,6 +66,8 @@ const showImageInput = ref(false);
 const newimages = ref(null);
 const newBlobList = ref([]);
 const deleteInoList = [];
+const dialog = ref(false);
+const dialogMessage = ref('');
 
 async function getBoard() {
   const dbBoard = await apiBoard.getBoard(bno, false);
@@ -110,8 +114,6 @@ getBoard();
 // 첨부된 사진의 수가 3개 미만인 경우에만, 파일첨부 태그가 활성화되도록 함.
 watch([bloblist, newBlobList]
       , ([newOldBlobList, newNewBlobList], [oldOldBlobList, oldNewBlobList]) => {
-        console.log('~~~~~~~`newBlobList.length : ' + newBlobList.value.length);
-        console.log('~~~~~~~`newNewBlobList.length : ' + newNewBlobList.length);
         if(newOldBlobList.length + newNewBlobList.length < 3) {
           showImageInput.value = true;
         } else if(newOldBlobList.length + newNewBlobList.length === 3) {
@@ -120,16 +122,59 @@ watch([bloblist, newBlobList]
         } else {
           // input태그 비활성화하고, 새롭게 첨부된 사진 이전의 상태로 되돌림.
           //첨부파일 3개 초과시, newBlobList.value.pop(); : newBlobList.value가 const라서 속성에 대한 변경만 가능하기 때문에 pop().
-          //////////////////////
-          console.log('!!!oldNewBlobList.length : ' + oldNewBlobList.length);
-          console.log('!!!newNewBlobList.length : ' + newNewBlobList.length);
-          console.log('!!!newBlobList.value.length : ' + newBlobList.value.length);
           let over = (newOldBlobList.length + newNewBlobList.length) - 3;
+          console.log('newimages.value.files[newimages.value.files.length-1] : ' + newimages.value.files[newimages.value.files.length-1]);
+          let keys = Object.keys(newimages.value.files);
+          console.log('~~~~~~!@!@keys : ' + keys);
+          console.log('~~~~~~!@!@keys[keys.length-1] : ' + keys[keys.length-1]);
+          console.log('~~~~~~!@!@typeof(keys) : ' + typeof(keys));
+          //
+          const input = document.getElementById('files')
+          // input.addEventListener('change', () => {
+            const fileListArr = [...input.files]
+            for(let i=0; i<over; i++) {
+              fileListArr.splice(-1, 1);
+              console.log(fileListArr);
+            }
+            // input.files = {...fileListArr};
+            input.files = null;
+            // newimages.value.files = {...fileListArr};
+          // });
+          /////
+          // newimages.value.files = null;
+          // newimages.value = null;
+
+          // console.log('newimages.value.files : ' + newimages.value.files);
+          //
+          // const fileListArr = [...newimages.value.files]
           for(let i=0; i<over; i++) {
+            // console.log('typeof(newimages.value) : ' + typeof(newimages.value));
+            // console.log('typeof(newimages.value.files) : ' + typeof(newimages.value.files));
+            // console.log('typeof(newimages.value.length) : ' + typeof(newimages.value.length));
+            // 갯수 초과된 첨부사진은 미리보기에서 제거되도록 newBlobList에서 삭제.
             newBlobList.value.pop();
+            // 갯수 초과된 첨부사진은 수정시에 저장되지 않도록 newimages에서도 삭제.
+            // console.log('before splice fileListArr' + fileListArr)
+            // fileListArr.splice(-1, 1);
+            // console.log('after splice fileListArr' + fileListArr)
+            // delete newimages.value.files[[keys[keys.length-(i+1)]]];
+            // delete newimages.value.files[Object.keys(newimages.value.files)[keys[keys.length-(i+1)]]];
+
+            // console.log('newimages.value.files[newimages.value.files.length-1] : ' + newimages.value.files[newimages.value.files.length-1]);
           }
+          // newimages.value.files = {...fileListArr};
+          // newimages.value = fileListArr;
+          // newimages.value.files = fileListArr;
+          // console.log('@@@newimages.value.files.length : ' + newimages.value.files.length);
+          // console.log('JSON.stringify(newimages.value) : ' + JSON.stringify(newimages.value));
+          // console.log('JSON.stringify(newimages.value.files) : ' + JSON.stringify(newimages.value.files));
+          // console.log('newimages.value : ' + newimages.value);
+          // console.log('newimages.value.files : ' + newimages.value.files);
+          // console.log('Object.keys(newimages.value)[images.value.length -1] : ' + Object.keys(newimages.value)[images.value.length -1]);
+          // console.log('Object.keys(newimages.value)[-1] : ' + Object.keys(newimages.value)[newimages.value.files]);
           showImageInput.value = false;
-          alert('사진은 3개까지 첨부할 수 있습니다.');
+          dialog.value = true;
+          dialogMessage.value = '사진은 3개까지 첨부할 수 있습니다.';
         }
       }
       , {deep: true}
@@ -163,10 +208,12 @@ function deleteImg(event) {
 async function handleUpdate() {
   // 필수 입력값인 제목과 사진이 등록되었는지 점검.
   if(board.value.btitle === null || board.value.btitle === 'undefined' || board.value.btitle === '') {
-    alert('제목을 입력해주세요.');
-     return;
+    dialog.value = true;
+    dialogMessage.value = '제목을 입력해주세요.';
+    return;
   } else if(bloblist.value.length + newBlobList.value.length == 0) {
-    alert('사진을 등록해주세요.');
+    dialog.value = true;
+    dialogMessage.value = '사진을 등록해주세요.';
     return;
   }
 
@@ -231,7 +278,6 @@ async function handleUpdate() {
   padding-bottom: 1rem;
   padding-left: 22%;
 }
-
 .line {
   border: 1px solid black;
 }
