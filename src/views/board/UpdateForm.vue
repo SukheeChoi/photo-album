@@ -109,20 +109,25 @@ getBoard();
 
 // 첨부된 사진의 수가 3개 미만인 경우에만, 파일첨부 태그가 활성화되도록 함.
 watch([bloblist, newBlobList]
-      , ([newBlobList, newNewBlobList], [oldBlobList, oldNewBlobList]) => {
-        console.log('~~~~~~~`newBlobList.length : ' + newBlobList.length);
+      , ([newOldBlobList, newNewBlobList], [oldOldBlobList, oldNewBlobList]) => {
+        console.log('~~~~~~~`newBlobList.length : ' + newBlobList.value.length);
         console.log('~~~~~~~`newNewBlobList.length : ' + newNewBlobList.length);
-        if(newBlobList.length + newNewBlobList.length < 3) {
+        if(newOldBlobList.length + newNewBlobList.length < 3) {
           showImageInput.value = true;
-        } else if(newBlobList.length + newNewBlobList.length === 3) {
+        } else if(newOldBlobList.length + newNewBlobList.length === 3) {
           // input태그는 비활성화하지만, 첨부된 사진은 그대로 둠.
           showImageInput.value = false;
         } else {
           // input태그 비활성화하고, 새롭게 첨부된 사진 이전의 상태로 되돌림.
-          //첨부파일 3개 초과시 이전의 상태로 bloblist 회귀.
+          //첨부파일 3개 초과시, newBlobList.value.pop(); : newBlobList.value가 const라서 속성에 대한 변경만 가능하기 때문에 pop().
           //////////////////////
           console.log('!!!oldNewBlobList.length : ' + oldNewBlobList.length);
-          newBlobList.pop();
+          console.log('!!!newNewBlobList.length : ' + newNewBlobList.length);
+          console.log('!!!newBlobList.value.length : ' + newBlobList.value.length);
+          let over = (newOldBlobList.length + newNewBlobList.length) - 3;
+          for(let i=0; i<over; i++) {
+            newBlobList.value.pop();
+          }
           showImageInput.value = false;
           alert('사진은 3개까지 첨부할 수 있습니다.');
         }
