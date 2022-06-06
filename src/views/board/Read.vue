@@ -75,7 +75,10 @@ const route = useRoute();
 const router = useRouter();
 
 const bno = route.query.bno;
-const pageNo = route.query.pageNo;
+let pageNo = route.query.pageNo;
+if (pageNo === "undefined") {
+  pageNo = 1;
+}
 const hit = route.query.hit;
 
 const board = ref(null);

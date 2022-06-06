@@ -10,10 +10,10 @@
           <div class="title">
             제목
           </div>
-          <input type="text" class="titleinput form-control" v-model="board.btitle"/>
+          <input type="text" class="titleinput form-control" v-model="board.btitle" />
         </div>
         <div v-show="bloblist != null" class="imagebox line">
-            <input v-show="showImageInput" type="file" class="form-control-file mb-2" @change="appendPreviewImg" ref="newimages" multiple/>
+            <input v-show="showImageInput" type="file" class="form-control-file mb-2" @change="appendPreviewImg" ref="newimages" multiple />
           <div class="imagethumbnail">
             <!-- 게시글이 가지고 있던 기존 이미지의 미리보기. -->
             <div v-for="(blobObj, index) in bloblist" :key="index">
@@ -32,7 +32,7 @@
         </div>
 
       <div class="bottombtn">
-        <input type="button" class="btn btn-primary btn-sm mr-1" value="취소" v-on:click="handleCancel"/>
+        <input :v-to="`/board/read?bno=${bno}&hit=false&pageNo=${pageNo}`" type="button" class="btn btn-primary btn-sm mr-1" value="취소" />
         <input type="submit" class="btn btn-primary btn-sm" value="수정"/>
       </div>
       </form>
@@ -54,7 +54,10 @@ const route = useRoute();
 const router = useRouter();
 const board = ref(null);
 const bno = route.query.bno;
-// const bno = 10129;
+let pageNo = route.query.pageNo;
+if (pageNo === "undefined") {
+  pageNo = 1;
+}
 const images = ref(null);
 const bloblist = ref([]);
 const showImageInput = ref(false);
@@ -144,6 +147,25 @@ function deleteImg(event) {
 }
 
 async function handleUpdate() {
+  let zeroImg = true;
+  let zeroNewImg = true;
+  if(images.value !== null && images.value !== 'undefined') {
+    zeroImg = false;
+  } else if(newimages.value !== null && newimages.value !== 'undefined') {
+    zeroNewImg = false;
+  }
+
+  if(board.value.btitle === null || board.value.btitle === 'undefined' || board.value.btitle === '') {
+      alert('제목을 입력해주세요.');
+      return;
+  } else if(
+    (zeroImg && zeroNewImg)
+    || (images.value.files.length + newimages.value.files.length) === 0
+  ) {
+    alert('사진을 등록해주세요.');
+    return;
+  }
+
   // board.value.mid = store.state.userId;
   board.value.bno = bno;
   if(deleteInoList.length > 0) {
@@ -170,7 +192,7 @@ async function handleUpdate() {
   const result = await apiBoard.updateBoard(multipartFormData);
   console.log('result : ' + result);
   if(result === 'success') {
-    router.push(`/board/read?bno=${bno}&hit=false`);
+    router.push(`/board/read?bno=${bno}&hit=false&pageNo=${pageNo}`);
   }
 }
 

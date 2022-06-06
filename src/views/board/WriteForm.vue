@@ -10,10 +10,10 @@
           <div class="title">
             제목
           </div>
-          <input type="text" class="titleinput form-control" placeholder="글 제목을 입력하세요." v-model="board.btitle"/>
+          <input type="text" class="titleinput form-control" placeholder="글 제목을 입력하세요." v-model="board.btitle" required />
         </div>
         <div class="imagebox">
-          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple/>
+          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple required />
           <div class="imagethumbnail">
             <div v-for="(blob, index) in bloblist" :key="index">
               <img class="singleimg" :src="blob" />
@@ -25,7 +25,7 @@
         </div>
 
         <div class="bottombtn">
-          <input type="button" class="btn btn-primary btn-sm mr-1" value="취소" v-on:click="handleCancel"/>
+          <input :to="`/board/list?pageNo=${pageNo}`" type="button" class="btn btn-primary btn-sm mr-1" value="취소" />
           <input type="submit" class="btn btn-primary btn-sm" value="저장"/>
         </div>
       </form>
@@ -39,12 +39,16 @@
 <script setup>
 import { onMounted, reactive, ref, watch, computed } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import apiBoard from '@/apis/board';
 
 const store = useStore();
+const route = useRoute();
 const router = useRouter();
-
+let pageNo = route.query.pageNo;
+if (pageNo === "undefined") {
+  pageNo = 1;
+}
 const board = reactive({
   btitle: ''
   , bmemo: ''
@@ -112,17 +116,12 @@ async function handleAdd() {
     const response = await apiBoard.createBoard(multipartFormData);
     console.log(response)
     if(response.result === 'success') {
-      router.push(`/board/read?bno=${parseInt(response.bno)}&hit=false`);
+      router.push(`/board/read?bno=${parseInt(response.bno)}&hit=false&pageNo=${pageNo}`);
     }
   } else {
     alert('첨부파일은 최대 3개까지 첨부 가능합니다.');
   }
 
-}
-
-// 취소 버튼 클릭시에, 목록화면으로 이동.// pager 넘기기~~~~~~~
-function handleCancel() {
-  router.push('/board/list');
 }
 
 // watch(images.value
