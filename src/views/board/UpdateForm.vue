@@ -147,23 +147,13 @@ function deleteImg(event) {
 }
 
 async function handleUpdate() {
-  let zeroImg = true;
-  let zeroNewImg = true;
-  if(images.value !== null && images.value !== 'undefined') {
-    zeroImg = false;
-  } else if(newimages.value !== null && newimages.value !== 'undefined') {
-    zeroNewImg = false;
-  }
-
+  // 필수 입력값인 제목과 사진이 등록되었는지 점검.
   if(board.value.btitle === null || board.value.btitle === 'undefined' || board.value.btitle === '') {
-      alert('제목을 입력해주세요.');
-      return;
-  } else if((zeroImg && zeroNewImg)) {
-      alert('사진을 등록해주세요.');
-      return;
-  // } else if((images.value.files.length + newimages.value.files.length) === 0) {
-  //     alert('사진을 등록해주세요.');
-  //     return;
+    alert('제목을 입력해주세요.');
+     return;
+  } else if(bloblist.value.length + newBlobList.value.length == 0) {
+    alert('사진을 등록해주세요.');
+    return;
   }
 
   // board.value.mid = store.state.userId;
