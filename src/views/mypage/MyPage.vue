@@ -8,7 +8,14 @@
         <div class="myinfo">이메일 : {{ email }}</div> -->
         <!-- <div class="myinfo">이름 : {{ user.name }}</div>
         <div class="myinfo">이메일 : {{ user.email }}</div> -->
-        <input type="text" v-model="model.mname"/>
+        <div class="myinfo">
+          이름:
+          <input type="text" v-model="mname"/>
+        </div>
+        <div class="myinfo">
+          이메일:
+          <input type="text" v-model="memail"/>
+        </div>
       </div>
       <hr />
 
