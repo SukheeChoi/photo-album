@@ -110,6 +110,7 @@ async function handleAdd() {
     }
     console.log('multipartFormData : ' + multipartFormData);
     const response = await apiBoard.createBoard(multipartFormData);
+    console.log(response)
     if(response.result === 'success') {
       router.push(`/board/read?bno=${parseInt(response.bno)}&hit=false`);
     }

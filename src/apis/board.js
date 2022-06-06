@@ -66,12 +66,13 @@ async function downloadImage(ino) {
   }
 }
 
-//전체 이미지 가져오는 요청
+//게시물 하나의 이미지 전체 가져오는 요청
 async function getImagesLee(bno) {
   let response = null;
   let result = null;
   try {
     response = getImages(bno).then(async (data) => {
+
       result = await data.images.map(async (data) => {
         let dataLee = await axios.get(`/board2/image/${data.ino}`, { responseType: "blob" });
         return dataLee.data;

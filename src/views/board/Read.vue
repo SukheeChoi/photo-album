@@ -59,8 +59,8 @@
           </button>
         </div>
       </div>
-      <textarea></textarea>
-      <router-link to="/board/list" class="btn btn-secondary btn-sm mt-3">목록 가기</router-link>
+      <div>{{board.bmemo}}</div>
+      <router-link :to="`/board/list?pageNo=${pageNo}`" class="btn btn-secondary btn-sm mt-3">목록 가기</router-link>
     </div>
   </div>
 </template>
@@ -75,6 +75,7 @@ const route = useRoute();
 const router = useRouter();
 
 const bno = route.query.bno;
+const pageNo = route.query.pageNo;
 const hit = route.query.hit;
 
 const board = ref(null);
@@ -102,7 +103,6 @@ async function getBoardLee() {
   lees.value = result.map((data)=> {
     return URL.createObjectURL(data);
   });
-  console.log(lees.value);
   return result;
 }
 
@@ -111,9 +111,10 @@ getBoardLee();
 
 async function handleDelete() {
   const result = await apiBoard.deleteBoard(bno);
+  console.log("aa", result)
   if(result === 'success') {
     // pageNo이용해야함!!!
-    router.push(`/board/list`);
+    router.push(`/board/list?pageNo=${pageNo}`);
   }
 }
 
