@@ -158,12 +158,12 @@ async function handleUpdate() {
   if(board.value.btitle === null || board.value.btitle === 'undefined' || board.value.btitle === '') {
       alert('제목을 입력해주세요.');
       return;
-  } else if(
-    (zeroImg && zeroNewImg)
-    || (images.value.files.length + newimages.value.files.length) === 0
-  ) {
-    alert('사진을 등록해주세요.');
-    return;
+  } else if((zeroImg && zeroNewImg)) {
+      alert('사진을 등록해주세요.');
+      return;
+  // } else if((images.value.files.length + newimages.value.files.length) === 0) {
+  //     alert('사진을 등록해주세요.');
+  //     return;
   }
 
   // board.value.mid = store.state.userId;
