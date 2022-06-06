@@ -14,7 +14,8 @@
         <div class="row">
           <div class="col-3 divItem pt-2" v-for="board of page.lastData" :key="board.bno">
             <!-- 앨범 요소 시작-->
-            <router-link :to="`/board/read?bno=${board.bno}&pageNo=${page.pager.pageNo}&hit=true`">
+            <!-- <router-link v-if="$store.state.userId === board.mid" :to="`/board/read?bno=${board.bno}&pageNo=${page.pager.pageNo}&hit=true`"> -->
+            <router-link v-if="board.mid = $store.state.userId" :to="`/board/read?bno=${board.bno}&pageNo=${page.pager.pageNo}&hit=true`">
               <div class="w-100 px-3" style="display: flex; justify-content: center; flex-direction: column">
                 <img :src="board.imgUrl" class="d-block img" style="object-fit: cover" alt="..." />
                 <div>
@@ -118,7 +119,7 @@ function range(start, end) {
 }
 
 function changePageNo(pageNo) {
-  router.push(`/board/list?pageNo=${pageNo}`);
+  router.push(`/mypage?pageNo=${pageNo}`);
   console.log("=========pageNo=============");
   console.log(pageNo);
   console.log(page.value.pager.pageNo);
