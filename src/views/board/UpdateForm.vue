@@ -32,7 +32,7 @@
         </div>
 
       <div class="bottombtn">
-        <input :v-to="`/board/read?bno=${bno}&hit=false&pageNo=${pageNo}`" type="button" class="btn btn-primary btn-sm mr-1" value="취소" />
+        <router-link :to="`/board/read?bno=${bno}&hit=false&pageNo=${pageNo}`" class="btn btn-primary btn-sm mr-1">취소</router-link>
         <input type="submit" class="btn btn-primary btn-sm" value="수정"/>
       </div>
       </form>

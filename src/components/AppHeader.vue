@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-2"></div>
       <div class="col-8" style="text-align: center">
-        <router-link to="/" class="main">Photo Album</router-link>
+        <router-link to="/board/list" class="main">Photo Album</router-link>
       </div>
       <div class="col-2" style="text-align: end">
         <router-link v-if="$store.state.userId === ''" to="/auth/join" class="headerbtn">회원가입</router-link>

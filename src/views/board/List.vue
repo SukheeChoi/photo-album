@@ -7,18 +7,18 @@
           <div class="col-3 divItem pt-2" v-for="board of page.lastData" :key="board.bno">
             <!-- 앨범 요소 시작-->
             <router-link :to="`/board/read?bno=${board.bno}&pageNo=${page.pager.pageNo}&hit=true`">
-            <div class="w-100 px-3" style="display: flex; justify-content: center; flex-direction: column">
-              <img :src="board.imgUrl" class="d-block img" style="object-fit: cover" alt="..." />
-              <div>
-                <dt>{{ board.btitle }}</dt>
-                <dd>{{ new Date(board.bdate).toLocaleDateString() }}</dd>
+              <div class="w-100 px-3" style="display: flex; justify-content: center; flex-direction: column">
+                <img :src="board.imgUrl" class="d-block img" style="object-fit: cover" alt="..." />
+                <div>
+                  <dt>{{ board.btitle }}</dt>
+                  <dd>{{ new Date(board.bdate).toLocaleDateString() }}</dd>
+                </div>
               </div>
-            </div>
             </router-link>
             <!-- 앨범 요소 끝 -->
           </div>
           <div class="col-12 d-flex align-content-end justify-content-end">
-            <router-link :to="`/board/writeform?pageNo=${pageNo}`" type="button" class="btn btn-info border pt-1 mt-1" style="font-size: 20px; width: 90px;">글쓰기</router-link>
+            <button @click="goWriteForm(pageNo)" class="btn btn-info border pt-1 mt-1" style="font-size: 20px; width: 90px">글쓰기</button>
           </div>
         </div>
       </div>
@@ -62,7 +62,6 @@ if (pageNo === "undefined") {
 async function getBoardList(pageNo) {
   const result = await apiBoard.getBoardList(pageNo);
   if (result.result === "success") {
-
     const resultLee = result.data.boards.map(async (data) => {
       console.log(data);
       const resultlee2 = data.bmemo ? await apiBoard.downloadImage(data.bmemo) : null;
@@ -73,11 +72,11 @@ async function getBoardList(pageNo) {
     console.log(lee);
     const lastData = lee.map((img) => {
       const imgUrl = img.resultlee2 ? URL.createObjectURL(img.resultlee2) : "@/assets/noImage.png";
-      return {...img, imgUrl}
-    })
-    console.log(lastData)
-    page.value = {...result.data, lastData}
-    console.log(page.value)
+      return { ...img, imgUrl };
+    });
+    console.log(lastData);
+    page.value = { ...result.data, lastData };
+    console.log(page.value);
   } else {
     router.push("/board");
   }
@@ -111,6 +110,14 @@ watch(route, (newUrl, oldUrl) => {
     getBoardList(1);
   }
 });
+
+function goWriteForm(pageNo = 1) {
+  if (sessionStorage.getItem("userId")) {
+    router.push(`/board/writeform?pageNo=` + pageNo);
+  } else {
+    alert("로그인해주세요")
+  }
+}
 </script>
 
 <style scoped></style>
@@ -123,5 +130,9 @@ watch(route, (newUrl, oldUrl) => {
   width: 100%;
   height: auto;
   max-height: 120px;
+}
+a {
+  text-decoration: none;
+  color: black;
 }
 </style>
