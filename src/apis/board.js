@@ -104,7 +104,8 @@ async function getImage(ino) {
 // 게시물 수정하고, 수정한 데이터 받아옴.(수정 성공시, bno를 read페이지에 넘겨서 수정된 결과물을 사용자에게 보여주기.)
 async function updateBoard(multipartFormData) {
   try {
-    await axios.put('/board2/', multipartFormData);
+    const response = await axios.put('/board2/', multipartFormData);
+    return response.result;
   } catch(error) {
     console.log(error);
   }

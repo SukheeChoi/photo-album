@@ -49,14 +49,14 @@
 <script setup>
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import apiBoard from '@/apis/board';
 
 const store = useStore();
-const router = useRouter();
+const route = useRoute();
 const board = ref(null);
-// const bno = route.query.bno;
-const bno = 10129;
+const bno = route.query.bno;
+// const bno = 10129;
 const images = ref(null);
 const bloblist = ref([]);
 const showImageInput = ref(false);
@@ -165,7 +165,11 @@ async function handleUpdate() {
   //   console.log('typeof(ino) : ' + typeof(ino));
   //   multipartFormData.append('deleteInoList', ino);
   // }
-  await apiBoard.updateBoard(multipartFormData);
+  const result = await apiBoard.updateBoard(multipartFormData);
+  console.log('result : ' + result);
+  // if(response.data) {
+
+  // }
 }
 
 </script>
