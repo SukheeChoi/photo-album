@@ -18,8 +18,9 @@
             <!-- 앨범 요소 끝 -->
           </div>
           <div class="col-12 d-flex align-content-end justify-content-end">
-						<router-link to="/board/writeform" type="button" class="btn btn-info border pt-1 mt-1" style="font-size: 20px; width: 90px;">글쓰기</router-link>
-					</div>
+            <router-link to="/board/writeform" type="button" class="btn btn-info border pt-1 mt-1" style="font-size: 20px; width: 90px;">글쓰기</router-link>
+          </div>
+        </div>
       </div>
       <!-- 페이저 -->
       <ul class="pagination d-flex justify-content-center">
@@ -78,7 +79,7 @@ async function getBoardList(pageNo) {
     page.value = {...result.data, lastData}
     console.log(page.value)
   } else {
-    router.push("/board2");
+    router.push("/board");
   }
 }
 
@@ -93,7 +94,7 @@ function range(start, end) {
 }
 
 function changePageNo(pageNo) {
-  router.push(`/board2/list?pageNo=${pageNo}`);
+  router.push(`/board/list?pageNo=${pageNo}`);
   console.log("=========pageNo=============");
   console.log(pageNo);
   console.log(page.value.pager.pageNo);

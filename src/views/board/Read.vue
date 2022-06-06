@@ -60,7 +60,7 @@
         </div>
       </div>
       <div>{{board.bmemo}}</div>
-      <router-link :to="`/board2/list?pageNo=${pageNo}`" class="btn btn-secondary btn-sm mt-3">목록 가기</router-link>
+      <router-link :to="`/board/list?pageNo=${pageNo}`" class="btn btn-secondary btn-sm mt-3">목록 가기</router-link>
     </div>
   </div>
 </template>
@@ -103,7 +103,6 @@ async function getBoardLee() {
   lees.value = result.map((data)=> {
     return URL.createObjectURL(data);
   });
-  console.log(lees.value);
   return result;
 }
 
@@ -112,9 +111,10 @@ getBoardLee();
 
 async function handleDelete() {
   const result = await apiBoard.deleteBoard(bno);
+  console.log("aa", result)
   if(result === 'success') {
     // pageNo이용해야함!!!
-    router.push(`/board/list`);
+    router.push(`/board/list?pageNo=${pageNo}`);
   }
 }
 
