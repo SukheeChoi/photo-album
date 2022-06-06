@@ -7,20 +7,21 @@ const routes = [
     path: '/',
     name: 'home',
     component: HomeView
-  },
-  {
-    path: '/board',
-    name: 'board',
-    component: () => import(/* webpackChunkName: "board" */ '../views/BoardView.vue'),
-    children: [
-      ...board
-    ]
-  },
+  }
+  // , {
+  //   path: '/board',
+  //   name: 'board',
+  //   component: () => import(/* webpackChunkName: "board" */ '../views/BoardView.vue'),
+  //   children: [
+  //     ...board
+  //   ]
+  // }
+  , ...board
 ]
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
-})
+});
 
-export default router
+export default router;

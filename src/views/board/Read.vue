@@ -27,8 +27,8 @@
         </div>
       </div>
       <div>
-        <router-link to="/board/updateForm" class="btn btn-info btn-sm mr-2">수정</router-link>
-        <button class="btn btn-info btn-sm">삭제</button>
+        <router-link :to="`/board/updateform?bno=${bno}`" class="btn btn-info btn-sm mr-2">수정</router-link>
+        <button @click="handleDelete" class="btn btn-info btn-sm">삭제</button>
       </div>
     </div>
     <div class="dataFile">
@@ -109,6 +109,14 @@ async function getBoardLee() {
 
 getBoard();
 getBoardLee();
+
+async function handleDelete() {
+  const result = await apiBoard.deleteBoard(bno);
+  if(result === 'success') {
+    // pageNo이용해야함!!!
+    router.push(`/board/list`);
+  }
+}
 
 </script>
 
