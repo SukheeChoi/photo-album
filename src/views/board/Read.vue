@@ -40,11 +40,11 @@
       </dl>
     </div>
     <div class="dataContent d-flex flex-column align-items-center">
-      <div class="viewAria mx-5" v-if="lees != null">
+      <div class="viewAria mx-5" v-if="Blobs != null">
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <div class="carousel-inner">
 
-            <div class="carousel-item" v-for="(blob, index) in lees" :key="index" :class="{ 'active' : index === 0 }">
+            <div class="carousel-item" v-for="(blob, index) in Blobs" :key="index" :class="{ 'active' : index === 0 }">
               <img :src="blob" class="d-block w-100" />
             </div>
             
@@ -83,7 +83,7 @@ const hit = route.query.hit;
 
 const board = ref(null);
 const images = ref(null);
-const lees = ref(null);
+const Blobs = ref(null);
 
 async function getBoard() {
   const result = await apiBoard.getBoard(bno, hit);
@@ -102,8 +102,8 @@ async function dowanloadBattach(ino, imgoname) {
 }
 
 async function getBoardLee() {
-  const result = await apiBoard.getImagesLee(bno);
-  lees.value = result.map((data)=> {
+  const result = await apiBoard.getImagesBlob(bno);
+  Blobs.value = result.map((data)=> {
     return URL.createObjectURL(data);
   });
   return result;

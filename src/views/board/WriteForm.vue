@@ -214,7 +214,7 @@ function previewImg() {
   flex-direction: column;
   padding-top: 1rem;
   padding-bottom: 1rem;
-  padding-left: 30rem;
+  padding-left: 22%;
 }
 
 .line {
@@ -257,12 +257,13 @@ function previewImg() {
   width: 50rem;
   height: 7rem;
   font-size: 17px;
+  margin-top: 1rem;
 }
 .bottombtn {
   display: flex;
   justify-content: flex-end;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  padding-right: 30rem;
+  padding-right: 18%;
 }
 </style>

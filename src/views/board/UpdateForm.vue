@@ -1,18 +1,18 @@
 <template>
   <div class="container2 d-flex">
     <div class="whitespace flex-fill"></div>
-    <div class="center flex-fill line">
+    <div class="center flex-fill">
       <div class="updateFormHeader">
         게시글 수정
       </div>
-      <form v-show="board" v-on:submit.prevent="handleUpdate"  class="updateform line">
+      <form v-show="board" v-on:submit.prevent="handleUpdate"  class="updateform">
         <div class="titlebox">
           <div class="title">
             제목
           </div>
           <input type="text" class="titleinput form-control" v-model="board.btitle" />
         </div>
-        <div v-show="bloblist != null" class="imagebox line">
+        <div v-show="bloblist != null" class="imagebo">
             <input v-show="showImageInput" type="file" class="form-control-file mb-2" @change="appendPreviewImg" ref="newimages" multiple />
           <div class="imagethumbnail">
             <!-- 게시글이 가지고 있던 기존 이미지의 미리보기. -->
@@ -109,20 +109,25 @@ getBoard();
 
 // 첨부된 사진의 수가 3개 미만인 경우에만, 파일첨부 태그가 활성화되도록 함.
 watch([bloblist, newBlobList]
-      , ([newBlobList, newNewBlobList], [oldBlobList, oldNewBlobList]) => {
-        console.log('~~~~~~~`newBlobList.length : ' + newBlobList.length);
+      , ([newOldBlobList, newNewBlobList], [oldOldBlobList, oldNewBlobList]) => {
+        console.log('~~~~~~~`newBlobList.length : ' + newBlobList.value.length);
         console.log('~~~~~~~`newNewBlobList.length : ' + newNewBlobList.length);
-        if(newBlobList.length + newNewBlobList.length < 3) {
+        if(newOldBlobList.length + newNewBlobList.length < 3) {
           showImageInput.value = true;
-        } else if(newBlobList.length + newNewBlobList.length === 3) {
+        } else if(newOldBlobList.length + newNewBlobList.length === 3) {
           // input태그는 비활성화하지만, 첨부된 사진은 그대로 둠.
           showImageInput.value = false;
         } else {
           // input태그 비활성화하고, 새롭게 첨부된 사진 이전의 상태로 되돌림.
-          //첨부파일 3개 초과시 이전의 상태로 bloblist 회귀.
+          //첨부파일 3개 초과시, newBlobList.value.pop(); : newBlobList.value가 const라서 속성에 대한 변경만 가능하기 때문에 pop().
           //////////////////////
           console.log('!!!oldNewBlobList.length : ' + oldNewBlobList.length);
-          newBlobList.pop();
+          console.log('!!!newNewBlobList.length : ' + newNewBlobList.length);
+          console.log('!!!newBlobList.value.length : ' + newBlobList.value.length);
+          let over = (newOldBlobList.length + newNewBlobList.length) - 3;
+          for(let i=0; i<over; i++) {
+            newBlobList.value.pop();
+          }
           showImageInput.value = false;
           alert('사진은 3개까지 첨부할 수 있습니다.');
         }
@@ -220,11 +225,11 @@ async function handleUpdate() {
 .updateform {
   display: flex;
   flex-direction: column;
-  flex-grow: 1;
-  justify-content: center;
+  /* flex-grow: 1;
+  justify-content: center; */
   padding-top: 1rem;
   padding-bottom: 1rem;
-  /* padding-left: 30rem; */
+  padding-left: 22%;
 }
 
 .line {
@@ -270,12 +275,13 @@ async function handleUpdate() {
   width: 50rem;
   height: 7rem;
   font-size: 17px;
+  margin-top: 1rem;
 }
 .bottombtn {
   display: flex;
   justify-content: flex-end;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
-  padding-right: 30rem;
+  padding-right: 18%;
 }
 </style>
