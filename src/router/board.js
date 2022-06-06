@@ -4,6 +4,10 @@ export default [
     component: () => import(/* webpackChunkName: "board" */ "../views/board/List.vue"),
   },
   {
+    path: "/board/list2",
+    component: () => import(/* webpackChunkName: "board" */ "../views/board/List.vue"),
+  },
+  {
     path: "/board/writeform",
     component: () => import(/* webpackChunkName: "board" */ "../views/board/WriteForm.vue"),
   },

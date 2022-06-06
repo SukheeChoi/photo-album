@@ -14,6 +14,18 @@ async function getBoardList(pageNo) {
   }
 }
 
+async function getBoardList2(pageNo) {
+  let response = null;
+  try {
+    response = await axios.get("/board2/list2", { params: { pageNo } }); //queryString 방식으로 넘기기, 이름이 같으면 생략 가능
+
+    return { result: "success", data: response.data };
+  } catch (error) {
+    console.log(error);
+    console.log("실패!");
+  }
+}
+
 // 게시물 작성(멀티 파트로 구성해서 전달)
 async function createBoard(multipartFormData) {
   try {
@@ -120,12 +132,13 @@ async function deleteBoard(bno) {
 
 export default {
   getBoardList,
+  getBoardList2,
   createBoard,
   getBoard,
   getImages,
   downloadImage,
-  getImagesBlob
-  , getImage
-  , updateBoard
-  , deleteBoard
+  getImagesBlob,
+  getImage,
+  updateBoard,
+  deleteBoard
 };

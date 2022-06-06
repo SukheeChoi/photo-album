@@ -85,8 +85,8 @@ if (pageNo === "undefined") {
 }
 
 //Rest API와 통신해서 페이지에 대한 정보(게시물 목록+페이저)
-async function getBoardList(pageNo) {
-  const result = await apiBoard.getBoardList(pageNo);
+async function getBoardList2(pageNo) {
+  const result = await apiBoard.getBoardList2(pageNo);
   if (result.result === "success") {
     //bmemo에 담긴 ino을 이용해 map함수로 하나씩 요청을 보낸다.
     const resultData = result.data.boards.map(async (data) => {
@@ -105,11 +105,11 @@ async function getBoardList(pageNo) {
 
     page.value = { ...result.data, lastData };
   } else {
-    router.push("/board/list");
+    router.push("/board/list2");
   }
 }
 
-getBoardList(pageNo);
+getBoardList2(pageNo);
 
 function range(start, end) {
   const numbers = [];
@@ -130,11 +130,11 @@ function changePageNo(pageNo) {
 
 watch(route, (newUrl, oldUrl) => {
   if (newUrl.query.pageNo) {
-    getBoardList(newUrl.query.pageNo);
+    getBoardList2(newUrl.query.pageNo);
     console.log("url변함");
   } else {
     console.log("url안변함");
-    getBoardList(1);
+    getBoardList2(1);
   }
 });
 </script>
