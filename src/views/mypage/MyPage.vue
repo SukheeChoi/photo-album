@@ -4,20 +4,8 @@
       <div class="mypagetitle">마이페이지</div>
       <hr />
       <div>
-        <!-- <div class="myinfo">이름 : {{ store.state.index.name }}</div>
-        <div class="myinfo">이메일 : {{ email }}</div> -->
-        <!-- <div class="myinfo">이름 : {{ user.name }}</div>
-        <div class="myinfo">이메일 : {{ user.email }}</div> -->
-        <div class="myinfo">
-          이름:
-          <input type="text" v-model="member.mname"/>
-          <!-- {{ member.mname }} -->
-        </div>
-        <div class="myinfo">
-          이메일:
-          <input type="text" v-model="memail"/>
-          <!-- {{ member.memail }} -->
-        </div>
+        <div class="myinfo">이름: {{ member.mname }}</div>
+        <div class="myinfo">이메일: {{ member.memail }}</div>
       </div>
       <hr />
 
@@ -85,7 +73,7 @@ const page = ref(null);
 async function getMember() {
   const result = await apiMember.getMember(mid);
   member.value = result;
-  console.log('member.value : ' + member.value);
+  console.log("member.value : " + member.value);
 }
 getMember();
 
