@@ -4,20 +4,9 @@
       <div class="mypagetitle">마이페이지</div>
       <hr />
       <div>
-        <!-- <div class="myinfo">이름 : {{ store.state.index.name }}</div>
-        <div class="myinfo">이메일 : {{ email }}</div> -->
-        <!-- <div class="myinfo">이름 : {{ user.name }}</div>
-        <div class="myinfo">이메일 : {{ user.email }}</div> -->
-        <div class="myinfo">
-          이름:
-          <input type="text" v-model="member.mname"/>
-          <!-- {{ member.mname }} -->
-        </div>
-        <div class="myinfo">
-          이메일:
-          <input type="text" v-model="memail"/>
-          <!-- {{ member.memail }} -->
-        </div>
+        <div class="myinfo">이름 : {{ member.mname }}</div>
+        <div class="myinfo">아이디 : {{ member.mid }}</div>
+        <div class="myinfo">이메일 : {{ member.memail }}</div>
       </div>
       <hr />
 
@@ -26,7 +15,7 @@
         <div class="row">
           <div class="col-3 divItem pt-2" v-for="board of page.lastData" :key="board.bno">
             <!-- 앨범 요소 시작-->
-            <router-link :to="`/board/read?bno=${board.bno}&pageNo=${page.pager.pageNo}&hit=true`">
+            <router-link v-if="'{{board.mid}} === member.mid'" :to="`/board/read?bno=${board.bno}&pageNo=${page.pager.pageNo}&hit=true`">
               <div class="w-100 px-3" style="display: flex; justify-content: center; flex-direction: column">
                 <img :src="board.imgUrl" class="d-block img" style="object-fit: cover" alt="..." />
                 <div>
@@ -85,7 +74,7 @@ const page = ref(null);
 async function getMember() {
   const result = await apiMember.getMember(mid);
   member.value = result;
-  console.log('member.value : ' + member.value);
+  console.log("member.value : " + member.value);
 }
 getMember();
 
@@ -99,23 +88,24 @@ if (pageNo === "undefined") {
 async function getBoardList(pageNo) {
   const result = await apiBoard.getBoardListById(pageNo, mid);
   if (result.result === "success") {
-    const resultLee = result.data.boards.map(async (data) => {
-      console.log(data);
-      const resultlee2 = data.bmemo ? await apiBoard.downloadImage(data.bmemo) : null;
-      return { ...data, resultlee2 };
+    //bmemo에 담긴 ino을 이용해 map함수로 하나씩 요청을 보낸다.
+    const resultData = result.data.boards.map(async (data) => {
+      const responseData = data.bmemo ? await apiBoard.downloadImage(data.bmemo) : null;
+      return { ...data, responseData };
     });
-    const lee = await Promise.all(resultLee);
 
-    console.log(lee);
-    const lastData = lee.map((img) => {
-      const imgUrl = img.resultlee2 ? URL.createObjectURL(img.resultlee2) : "@/assets/noImage.png";
+    //받아온 데이터들 promise.all로 비동기 처리 해준다.
+    const promiseAll = await Promise.all(resultData);
+
+    //받아온 데이터들 중 blob데이터를 URL로 바꾸는 코드
+    const lastData = promiseAll.map((img) => {
+      const imgUrl = img.responseData ? URL.createObjectURL(img.responseData) : null;
       return { ...img, imgUrl };
     });
-    console.log(lastData);
+
     page.value = { ...result.data, lastData };
-    console.log(page.value);
   } else {
-    router.push("/board");
+    router.push("/board/list");
   }
 }
 
@@ -130,7 +120,7 @@ function range(start, end) {
 }
 
 function changePageNo(pageNo) {
-  router.push(`/board/list?pageNo=${pageNo}`);
+  router.push(`/mypage?pageNo=${pageNo}`);
   console.log("=========pageNo=============");
   console.log(pageNo);
   console.log(page.value.pager.pageNo);
