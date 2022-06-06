@@ -22,9 +22,5 @@ export default [
   {
     path: "/auth/login",
     component: () => import(/* webpackChunkName: "auth" */ "../views/auth/Login.vue"),
-  },
-  {
-    path: "/mypage/mypage",
-    component: () => import(/* webpackChunkName: "auth" */ "../views/mypage/MyPage.vue"),
-  },
+  }
 ]

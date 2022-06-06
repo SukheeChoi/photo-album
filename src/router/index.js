@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import board from '@/router/board'
+import mypage from './mypage'
 
 const routes = [
   {
@@ -17,6 +18,7 @@ const routes = [
   //   ]
   // }
   , ...board
+  , ...mypage
 ]
 
 const router = createRouter({
