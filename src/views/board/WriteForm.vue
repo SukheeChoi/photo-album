@@ -33,6 +33,7 @@
     </div>
     <div class="whitespace flex-fill"></div>
     
+    <AlertDialog v-if="dialog" :message="dialogMessage" @close="dialog = false" />
   </div>
 </template>
 
@@ -41,6 +42,7 @@ import { onMounted, reactive, ref, watch, computed } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute, useRouter } from 'vue-router';
 import apiBoard from '@/apis/board';
+import AlertDialog from "@/components/AlertDialog.vue";
 
 const store = useStore();
 const route = useRoute();
@@ -57,6 +59,8 @@ const board = reactive({
 
 const images = ref(null);
 const bloblist = ref([]);
+const dialog = ref(false);
+const dialogMessage = ref('');
 
 // 사용자가 input태그로 파일 선택시에, 선택된 파일의 갯수 점검.(3개까지 가능.)
 // const computedImageNum = computed({
@@ -101,6 +105,12 @@ const bloblist = ref([]);
 // );
 
 async function handleAdd() {
+  // 제목 작성여부 확인.
+  if(board.btitle === null || board.value.btitle === 'undefined' || board.btitle === '') {
+    dialog.value = true;
+    dialogMessage.value = '제목을 작성해주세요.';
+  }
+
   // 선택한 첨부파일 개수확인.
   let imglength = images.value.files.length;
   console.log('imglength');
@@ -119,7 +129,8 @@ async function handleAdd() {
       router.push(`/board/read?bno=${parseInt(response.bno)}&hit=false&pageNo=${pageNo}`);
     }
   } else {
-    alert('첨부파일은 최대 3개까지 첨부 가능합니다.');
+    dialog.value = true;
+    dialogMessage.value = '첨부파일은 최대 3개까지 첨부 가능합니다.';
   }
 
 }

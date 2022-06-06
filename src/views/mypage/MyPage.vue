@@ -97,7 +97,7 @@ if (pageNo === "undefined") {
 
 //Rest API와 통신해서 페이지에 대한 정보(게시물 목록+페이저)
 async function getBoardList(pageNo) {
-  const result = await apiBoard.getBoardList(pageNo);
+  const result = await apiBoard.getBoardListById(pageNo, mid);
   if (result.result === "success") {
     const resultLee = result.data.boards.map(async (data) => {
       console.log(data);
