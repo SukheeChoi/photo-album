@@ -149,9 +149,6 @@ async function handleUpdate() {
   board.value.bno = bno;
   board.value.deleteInoList = deleteInoList;
   const multipartFormData = new FormData();
-  // multipartFormData.append('bno', bno);
-  // multipartFormData.append('btitle', board.value.btitle);
-  // multipartFormData.append('bmemo', board.value.bmemo);
   multipartFormData.append('board'
                           , new Blob([JSON.stringify(board.value)]
                           , {type: "application/json"})
@@ -169,26 +166,6 @@ async function handleUpdate() {
   //   multipartFormData.append('deleteInoList', ino);
   // }
   await apiBoard.updateBoard(multipartFormData);
-
-
-
-
-
-
-  // FormData(): 게시물 내용과 새롭게 추가할 사진 정보
-  // const multipartFormData = new FormData();
-  // multipartFormData.append('bno', bno);
-  // multipartFormData.append('btitle', board.value.btitle);
-  // multipartFormData.append('bmemo', board.value.bmemo);
-  // multipartFormData.append('mid', store.state.userId);
-  // if(newimages.value.files.length > 0) {
-  //   for(let i=0; i<newimages.value.files.length; i++) {
-  //     multipartFormData.append('imagesArray', newimages.value.files[i]);
-  //   }
-  // }
-  // console.log('typeof(deleteInoList) : ' + typeof(deleteInoList));
-  // console.log('JSON.stringify(deleteInoList)', JSON.stringify(deleteInoList));
-  // await apiBoard.updateBoard(multipartFormData, deleteInoList);
 }
 
 </script>
