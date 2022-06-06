@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\osstem\projects\node-workspace\photo-album\.metadata\.plugins\org.eclipse.jdt.core
+1428022536.index
+3500596540.index
+1865797976.index

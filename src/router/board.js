@@ -1,6 +1,6 @@
 export default [
   {
-    path: "/board/list",
+    path: "/board2/list",
     component: () => import(/* webpackChunkName: "board" */ "../views/board/List.vue"),
   },
   {
