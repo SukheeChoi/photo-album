@@ -4,8 +4,11 @@
       <div class="mypagetitle">마이페이지</div>
       <hr />
       <div>
-        <div class="myinfo">이름 :</div>
-        <div class="myinfo">이메일 :</div>
+        <!-- <div class="myinfo">이름 : {{ store.state.index.name }}</div>
+        <div class="myinfo">이메일 : {{ email }}</div> -->
+        <!-- <div class="myinfo">이름 : {{ user.name }}</div>
+        <div class="myinfo">이메일 : {{ user.email }}</div> -->
+        <input type="text" v-model="model.mname"/>
       </div>
       <hr />
 
@@ -30,7 +33,23 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref } from "vue";
+import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
+import apiMember from '@/apis/member';
+
+const store = useStore();
+const route = useRoute();
+const member = ref(null);
+const mid = route.query.mid;
+
+async function getMember() {
+  const dbMember = await apiMember.getMember(mid);
+  member.value = dbMember;
+}
+getMember();
+</script>
 
 <style scoped>
 .mypage {

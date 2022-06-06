@@ -38,7 +38,7 @@ async function handleLogin() {
 
   if (result === "success") {
     alertDialog.value = false;
-    router.push("/board/list");
+    router.push("/");
   } else if (result === "fail-401") {
     alertDialogMessage.value = "로그인 실패: 아이디 또는 패스워드가 일치하지 않습니다";
   } else {

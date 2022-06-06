@@ -24,7 +24,7 @@ const router = useRouter();
 
 async function handleLogout() {
   await auth.logout();
-  router.push("/board/list");
+  router.push("/");
 }
 </script>
 
