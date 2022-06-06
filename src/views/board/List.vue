@@ -124,4 +124,8 @@ watch(route, (newUrl, oldUrl) => {
   height: auto;
   max-height: 120px;
 }
+a {
+  text-decoration: none;
+  color: black;
+}
 </style>
