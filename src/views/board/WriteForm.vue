@@ -10,14 +10,11 @@
           <div class="title">
             제목
           </div>
-          <input type="text" class="titleinput form-control" placeholder="글 제목을 입력하세요." v-model="board.btitle"/>
+          <input type="text" class="titleinput form-control" placeholder="글 제목을 입력하세요." v-model="board.btitle" required />
         </div>
         <div class="imagebox">
-          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple/>
+          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple required />
           <div class="imagethumbnail">
-            <!-- <img class="singleimg" id="img1"/>
-            <img class="singleimg" id="img2" />
-            <img class="singleimg" id="img3" /> -->
             <div v-for="(blob, index) in bloblist" :key="index">
               <img class="singleimg" :src="blob" />
             </div>
@@ -28,7 +25,7 @@
         </div>
 
         <div class="bottombtn">
-          <input type="button" class="btn btn-primary btn-sm mr-1" value="취소" v-on:click="handleCancel"/>
+          <input :to="`/board/list?pageNo=${pageNo}`" type="button" class="btn btn-primary btn-sm mr-1" value="취소" />
           <input type="submit" class="btn btn-primary btn-sm" value="저장"/>
         </div>
       </form>
@@ -40,14 +37,18 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watch, watchEffect } from 'vue';
+import { onMounted, reactive, ref, watch, computed } from 'vue';
 import { useStore } from 'vuex';
-import { useRouter } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import apiBoard from '@/apis/board';
 
 const store = useStore();
+const route = useRoute();
 const router = useRouter();
-
+let pageNo = route.query.pageNo;
+if (pageNo === "undefined") {
+  pageNo = 1;
+}
 const board = reactive({
   btitle: ''
   , bmemo: ''
@@ -56,6 +57,48 @@ const board = reactive({
 
 const images = ref(null);
 const bloblist = ref([]);
+
+// 사용자가 input태그로 파일 선택시에, 선택된 파일의 갯수 점검.(3개까지 가능.)
+// const computedImageNum = computed({
+//   get() {
+//     if(images.value !== null ){
+//       console.log('images.value.files.length : ' + images.value.files.length);
+//       return images.value.files.length;
+//     } else {
+//       return null;
+//     }
+//   }
+//   , set(val) {
+//       const a = val;
+//       console.log('val : ' + val);
+//   }
+// });
+// const computedImageNum = computed(() => {
+//   console.log('computed()');
+//   if(images.value !== null) {
+//     console.log('images.value.files.length : ' + images.value.files.length);
+//     const fileLength = images.value.files.length;
+//     return fileLength;
+//   }
+//   return null;
+// });
+
+// watch(
+//   () => images.value.files
+//   , (newImages, oldImages) => {
+//     console.log('///');
+//     console.log('watch - newImages : ' + newImages);
+//   }
+//   , {deep: true}
+// );
+// watch(images
+//   , (newImages, oldImages) => {
+//     console.log('watch - newImages : ' + newImages);
+//     console.log('watch - newImages.value : ' + newImages.value);
+//     console.log('watch - newImages.files.length : ' + newImages.files.length);
+//   }
+//   , {deep: true}
+// );
 
 async function handleAdd() {
   // 선택한 첨부파일 개수확인.
@@ -73,17 +116,12 @@ async function handleAdd() {
     const response = await apiBoard.createBoard(multipartFormData);
     console.log(response)
     if(response.result === 'success') {
-      router.push(`/board/read?bno=${parseInt(response.bno)}&hit=false`);
+      router.push(`/board/read?bno=${parseInt(response.bno)}&hit=false&pageNo=${pageNo}`);
     }
   } else {
     alert('첨부파일은 최대 3개까지 첨부 가능합니다.');
   }
 
-}
-
-// 취소 버튼 클릭시에, 목록화면으로 이동.// pager 넘기기~~~~~~~
-function handleCancel() {
-  router.push('/board/list');
 }
 
 // watch(images.value

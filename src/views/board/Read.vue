@@ -27,7 +27,7 @@
         </div>
       </div>
       <div>
-        <router-link :to="`/board/updateform?bno=${bno}`" class="btn btn-info btn-sm mr-2">수정</router-link>
+        <router-link :to="`/board/updateform?bno=${bno}&pageNo=${pageNo}`" class="btn btn-info btn-sm mr-2">수정</router-link>
         <button @click="handleDelete" class="btn btn-info btn-sm">삭제</button>
       </div>
     </div>
@@ -75,7 +75,10 @@ const route = useRoute();
 const router = useRouter();
 
 const bno = route.query.bno;
-const pageNo = route.query.pageNo;
+let pageNo = route.query.pageNo;
+if (pageNo === "undefined") {
+  pageNo = 1;
+}
 const hit = route.query.hit;
 
 const board = ref(null);

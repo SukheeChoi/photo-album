@@ -18,7 +18,7 @@
             <!-- 앨범 요소 끝 -->
           </div>
           <div class="col-12 d-flex align-content-end justify-content-end">
-            <router-link to="/board/writeform" type="button" class="btn btn-info border pt-1 mt-1" style="font-size: 20px; width: 90px;">글쓰기</router-link>
+            <router-link :to="`/board/writeform?pageNo=${pageNo}`" type="button" class="btn btn-info border pt-1 mt-1" style="font-size: 20px; width: 90px;">글쓰기</router-link>
           </div>
         </div>
       </div>
