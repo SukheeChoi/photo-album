@@ -43,7 +43,7 @@ async function handleJoin() {
 
   if (result === "success") {
     alertDialog.value = false;
-    router.push("/board2/list");
+    router.push("/board/list");
   } else if (result === "duplicated") {
     alertDialogMessage.value = "회원 가입 실패 : 아이디 중복";
   } else if (result === "fail") {
