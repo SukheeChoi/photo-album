@@ -13,7 +13,7 @@
           <input type="text" class="titleinput form-control" placeholder="글 제목을 입력하세요." v-model="board.btitle" required />
         </div>
         <div class="imagebox">
-          <input type="file" class="form-control-file mb-2" @change="previewImg" ref="images" multiple required />
+          <input type="file" id="files" class="form-control-file mb-2" @change="previewImg" ref="images" multiple required />
           <div class="imagethumbnail">
             <div v-for="(blob, index) in bloblist" :key="index">
               <img class="singleimg" :src="blob" />
@@ -57,7 +57,8 @@ const board = reactive({
   , mid: store.state.userId
 });
 
-const images = ref(null);
+const images = ref(document.getElementById('files'));
+// const images = ref(null);
 const bloblist = ref([]);
 const dialog = ref(false);
 const dialogMessage = ref('');
@@ -143,12 +144,29 @@ async function handleAdd() {
 // );
 
 // 첨부할 사진 선택시에 미리보기 제공.
-function previewImg() {
+function previewImg(event) {
   // 반응형 array와 URL.createObjectUR를 이용한 미리보기 제공.
   bloblist.value = [];
   for(let imageFile of images.value.files) {
     bloblist.value.push( URL.createObjectURL(imageFile) );
   }
+
+  // 선택된 총 사진 갯수 점검해서, 초과분의 뒷부분은 제거.
+  if(images.value.files.length > 3) {
+    let overZero = images.value.files.length;
+    console.log('before - event.target.files.length : ' + event.target.files.length);
+    console.log('before - event.target.files[0] : ' + event.target.files[0]);
+    event.target.value = '';
+    console.log('after - event.target.files.length : ' + event.target.files.length);
+    // 미리보기도 제거.
+    for(let i=0; i<overZero; i++) {
+      console.log('bloblist.value.length : ' + bloblist.value.length);
+      bloblist.value.pop();
+    }
+    dialog.value = true;
+    dialogMessage.value = '첨부파일은 최대 3개까지 첨부 가능합니다.';
+  }
+
   // FileReader()를 이용한 미리보기 제공.
   // if(images.value.files.length !== 0) {
   //   console.log('images.value.files.length !== 0');

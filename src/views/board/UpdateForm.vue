@@ -181,6 +181,9 @@ watch([bloblist, newBlobList]
       , {immediate: true}
 );
 
+// input태그에 change가 발생하면, newimage.value.files.length를 점검해서, 태그의 files초기화 가능..?
+
+
 // 첨부할 사진 선택시에 미리보기에 추가해서 제공.
 function appendPreviewImg() {
   // 반응형 array와 URL.createObjectUR를 이용한 미리보기 제공.
