@@ -150,16 +150,9 @@ export default {
   getBoard,
   getImages,
   downloadImage,
-<<<<<<< HEAD
-  getImagesBlob,
-  getImage,
-  updateBoard,
-  deleteBoard
-=======
   getImagesBlob
   , getImage
   , updateBoard
   , deleteBoard
   , getBoardListById
->>>>>>> 70c85b8963b5a2d69973da1a2ed86d4b1f5d2a6b
 };

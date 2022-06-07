@@ -107,7 +107,7 @@ const dialogMessage = ref('');
 
 async function handleAdd() {
   // 제목 작성여부 확인.
-  if(board.btitle === null || board.value.btitle === 'undefined' || board.btitle === '') {
+  if(board.btitle == null || board.btitle == 'undefined' || board.btitle == '') {
     dialog.value = true;
     dialogMessage.value = '제목을 작성해주세요.';
   }
@@ -121,6 +121,7 @@ async function handleAdd() {
     multipartFormData.append('bmemo', board.bmemo);
     multipartFormData.append('mid', store.state.userId);
     for(let i=0; i<images.value.files.length; i++) {
+      // FormData()에 append하는 'key' 누적시에, 해당 key는 값들의 []형태가 됨.
       multipartFormData.append('imagesArray', images.value.files[i]);
     }
     console.log('multipartFormData : ' + multipartFormData);
